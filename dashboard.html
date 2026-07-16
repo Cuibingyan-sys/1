@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMI 计算器 - 运营控制面板</title>
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: #F3F4F6;
+    color: #1F2937;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ===== Header ===== */
+  .header {
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+    color: #fff;
+    padding: 32px 24px 40px;
+    text-align: center;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .header .subtitle {
+    font-size: 14px;
+    opacity: 0.85;
+    font-weight: 400;
+  }
+  .header .site-url {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 13px;
+    background: rgba(255,255,255,0.15);
+    padding: 4px 14px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+
+  /* ===== Container ===== */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* ===== Status Cards ===== */
+  .status-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: -24px;
+    position: relative;
+    z-index: 2;
+  }
+  .status-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 22px 18px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .status-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+  }
+  .status-card .icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+  }
+  .status-card .label {
+    font-size: 13px;
+    color: #6B7280;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .status-card .value {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .status-dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    margin-right: 6px;
+  }
+  .dot-online  { background: #10B981; }
+  .dot-offline { background: #EF4444; }
+  .dot-checking{ background: #F59E0B; animation: pulse 1.2s infinite; }
+  .dot-warning { background: #F59E0B; }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.35; }
+  }
+  .text-online  { color: #10B981; }
+  .text-offline { color: #EF4444; }
+  .text-warning { color: #F59E0B; }
+
+  /* ===== Quick Actions ===== */
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #374151;
+    margin: 32px 0 16px;
+    padding-left: 4px;
+  }
+  .actions-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+  .action-btn {
+    background: #fff;
+    border: 2px solid #E5E7EB;
+    border-radius: 14px;
+    padding: 22px 16px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    color: #1F2937;
+    transition: all 0.2s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-family: inherit;
+  }
+  .action-btn:hover {
+    border-color: #4F46E5;
+    box-shadow: 0 4px 16px rgba(79,70,229,0.15);
+    color: #4F46E5;
+    transform: translateY(-2px);
+  }
+  .action-btn .btn-icon {
+    font-size: 30px;
+  }
+  .action-btn .btn-hint {
+    font-size: 11px;
+    font-weight: 400;
+    color: #9CA3AF;
+  }
+
+  /* ===== Traffic Overview ===== */
+  .traffic-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .traffic-card .placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    color: #9CA3AF;
+    text-align: center;
+  }
+  .traffic-card .placeholder .ph-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+  }
+  .traffic-card .placeholder .ph-text {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .traffic-card .placeholder .ph-sub {
+    font-size: 12px;
+    color: #D1D5DB;
+    margin-top: 4px;
+  }
+  .traffic-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .metric-item {
+    text-align: center;
+    padding: 14px 10px;
+    background: #F9FAFB;
+    border-radius: 10px;
+  }
+  .metric-item .m-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: #4F46E5;
+  }
+  .metric-item .m-label {
+    font-size: 12px;
+    color: #6B7280;
+    margin-top: 4px;
+  }
+
+  /* ===== Daily Report ===== */
+  .report-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .report-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid #F3F4F6;
+  }
+  .report-item:last-child {
+    border-bottom: none;
+  }
+  .report-item .ri-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .report-item .ri-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .ri-icon.ri-purple { background: #EDE9FE; color: #7C3AED; }
+  .ri-icon.ri-green  { background: #D1FAE5; color: #059669; }
+  .ri-icon.ri-blue   { background: #DBEAFE; color: #2563EB; }
+  .ri-icon.ri-orange { background: #FEF3C7; color: #D97706; }
+  .report-item .ri-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1F2937;
+  }
+  .report-item .ri-time {
+    font-size: 12px;
+    color: #9CA3AF;
+  }
+  .report-item .ri-status {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 12px;
+  }
+  .ri-status.ok    { background: #D1FAE5; color: #059669; }
+  .ri-status.warn  { background: #FEF3C7; color: #D97706; }
+  .ri-status.info  { background: #DBEAFE; color: #2563EB; }
+
+  /* ===== Refresh Button ===== */
+  .refresh-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 28px 0 40px;
+  }
+  .refresh-btn {
+    background: #4F46E5;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 32px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+    box-shadow: 0 4px 14px rgba(79,70,229,0.30);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .refresh-btn:hover {
+    background: #4338CA;
+    box-shadow: 0 6px 20px rgba(79,70,229,0.40);
+    transform: translateY(-1px);
+  }
+  .refresh-btn:active {
+    transform: translateY(0);
+  }
+  .refresh-btn .spinner {
+    display: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  .refresh-btn.refreshing .spinner { display: inline-block; }
+  .refresh-btn.refreshing .rf-text  { display: none; }
+
+  /* ===== Footer ===== */
+  .footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: #9CA3AF;
+    margin-top: 20px;
+  }
+
+  /* ===== Toast ===== */
+  .toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1F2937;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  }
+  .toast.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 768px) {
+    .status-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .actions-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .actions-row .action-btn:last-child {
+      grid-column: 1 / -1;
+    }
+    .traffic-metrics {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .header h1 {
+      font-size: 22px;
+    }
+    .container {
+      padding: 0 12px;
+    }
+  }
+  @media (max-width: 480px) {
+    .status-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: -20px;
+    }
+    .status-card {
+      padding: 16px 10px;
+    }
+    .actions-row {
+      grid-template-columns: 1fr;
+    }
+    .actions-row .action-btn:last-child {
+      grid-column: auto;
+    }
+    .traffic-metrics {
+      grid-template-columns: 1fr 1fr;
+    }
+    .header {
+      padding: 24px 16px 32px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== Header ===== -->
+<header class="header">
+  <h1>BMI 计算器 · 运营控制面板</h1>
+  <p class="subtitle">实时监控网站状态与运营数据</p>
+  <span class="site-url">https://1-seven-lovat-14.vercel.app</span>
+</header>
+
+<!-- ===== Main Container ===== -->
+<div class="container">
+
+  <!-- Status Cards -->
+  <div class="status-grid">
+    <div class="status-card" id="card-online">
+      <div class="icon">&#127760;</div>
+      <div class="label">网站在线状态</div>
+      <div class="value" id="val-online">
+        <span class="status-dot dot-checking"></span>检测中...
+      </div>
+    </div>
+    <div class="status-card">
+      <div class="icon">&#128269;</div>
+      <div class="label">SEO 状态</div>
+      <div class="value">
+        <span class="status-dot dot-warning"></span><span class="text-warning">待验证</span>
+      </div>
+    </div>
+    <div class="status-card">
+      <div class="icon">&#128200;</div>
+      <div class="label">GA4 状态</div>
+      <div class="value">
+        <span class="status-dot dot-warning"></span><span class="text-warning">等待配置</span>
+      </div>
+    </div>
+    <div class="status-card">
+      <div class="icon">&#128176;</div>
+      <div class="label">AdSense 状态</div>
+      <div class="value">
+        <span class="status-dot dot-warning"></span><span class="text-warning">等待配置</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <h2 class="section-title">快捷操作</h2>
+  <div class="actions-row">
+    <button class="action-btn" onclick="openUrl('https://vercel.com/login')">
+      <span class="btn-icon">&#128640;</span>
+      <span>一键部署</span>
+      <span class="btn-hint">跳转至 Vercel 控制台</span>
+    </button>
+    <button class="action-btn" onclick="openUrl('https://search.google.com/search-console')">
+      <span class="btn-icon">&#128202;</span>
+      <span>Google Search Console</span>
+      <span class="btn-hint">查看搜索表现与索引状态</span>
+    </button>
+    <button class="action-btn" onclick="openUrl('https://adsense.google.com')">
+      <span class="btn-icon">&#128176;</span>
+      <span>Google AdSense</span>
+      <span class="btn-hint">管理广告与收益</span>
+    </button>
+  </div>
+
+  <!-- Traffic Overview -->
+  <h2 class="section-title">流量概览</h2>
+  <div class="traffic-card">
+    <div class="placeholder">
+      <div class="ph-icon">&#128200;</div>
+      <div class="ph-text">等待配置 GA4</div>
+      <div class="ph-sub">接入 Google Analytics 4 后将在此展示实时流量数据</div>
+    </div>
+    <div class="traffic-metrics">
+      <div class="metric-item">
+        <div class="m-value">--</div>
+        <div class="m-label">今日访客</div>
+      </div>
+      <div class="metric-item">
+        <div class="m-value">--</div>
+        <div class="m-label">页面浏览量</div>
+      </div>
+      <div class="metric-item">
+        <div class="m-value">--</div>
+        <div class="m-label">平均停留</div>
+      </div>
+      <div class="metric-item">
+        <div class="m-value">--</div>
+        <div class="m-label">跳出率</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Daily Report -->
+  <h2 class="section-title">每日报告预览</h2>
+  <div class="report-card">
+    <div class="report-item">
+      <div class="ri-left">
+        <div class="ri-icon ri-purple">&#127760;</div>
+        <div>
+          <div class="ri-title">网站可用性检查</div>
+          <div class="ri-time">每日自动运行 · 00:00</div>
+        </div>
+      </div>
+      <span class="ri-status ok">正常</span>
+    </div>
+    <div class="report-item">
+      <div class="ri-left">
+        <div class="ri-icon ri-green">&#128200;</div>
+        <div>
+          <div class="ri-title">流量摘要报告</div>
+          <div class="ri-time">每日自动运行 · 08:00</div>
+        </div>
+      </div>
+      <span class="ri-status warn">等待配置</span>
+    </div>
+    <div class="report-item">
+      <div class="ri-left">
+        <div class="ri-icon ri-blue">&#128269;</div>
+        <div>
+          <div class="ri-title">SEO 健康检查</div>
+          <div class="ri-time">每日自动运行 · 06:00</div>
+        </div>
+      </div>
+      <span class="ri-status info">待启用</span>
+    </div>
+    <div class="report-item">
+      <div class="ri-left">
+        <div class="ri-icon ri-orange">&#128176;</div>
+        <div>
+          <div class="ri-title">广告收益快报</div>
+          <div class="ri-time">每日自动运行 · 09:00</div>
+        </div>
+      </div>
+      <span class="ri-status warn">等待配置</span>
+    </div>
+  </div>
+
+  <!-- Refresh Button -->
+  <div class="refresh-wrap">
+    <button class="refresh-btn" id="refreshBtn" onclick="refreshStatus()">
+      <span class="spinner" id="spinner"></span>
+      <span class="rf-text">&#128260; 刷新状态</span>
+    </button>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  BMI 计算器运营控制面板 &mdash; 数据实时更新中
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  const SITE_URL = 'https://1-seven-lovat-14.vercel.app';
+
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._tid);
+    t._tid = setTimeout(function(){ t.classList.remove('show'); }, 2800);
+  }
+
+  function openUrl(url) {
+    window.open(url, '_blank', 'noopener');
+  }
+
+  async function checkSiteStatus() {
+    var valEl = document.getElementById('val-online');
+    var cardEl = document.getElementById('card-online');
+    valEl.innerHTML = '<span class="status-dot dot-checking"></span>检测中...';
+    try {
+      var resp = await fetch(SITE_URL, { mode: 'no-cors', signal: AbortSignal.timeout(8000) });
+      valEl.innerHTML = '<span class="status-dot dot-online"></span><span class="text-online">在线</span>';
+      cardEl.style.borderTop = '3px solid #10B981';
+    } catch (e) {
+      valEl.innerHTML = '<span class="status-dot dot-offline"></span><span class="text-offline">离线</span>';
+      cardEl.style.borderTop = '3px solid #EF4444';
+    }
+  }
+
+  async function refreshStatus() {
+    var btn = document.getElementById('refreshBtn');
+    btn.classList.add('refreshing');
+    btn.disabled = true;
+    await checkSiteStatus();
+    showToast('状态已刷新');
+    btn.classList.remove('refreshing');
+    btn.disabled = false;
+  }
+
+  // 页面加载时自动检测一次
+  window.addEventListener('DOMContentLoaded', function() {
+    checkSiteStatus();
+  });
+</script>
+
+</body>
+</html>

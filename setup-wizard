@@ -87,12 +87,12 @@
     <h2><span class="step-num">2</span> 填入你的 ID</h2>
     <p class="subtitle">从上面创建的服务中复制 ID，粘贴到下面</p>
     <div class="form-group">
-      <label>GA4 测量 ID <span class="hint">格式: G-XXXXXXXXXX</span></label>
+      <label>GA4 测量 ID <span class="hint">格式: G-9HDK6XWY7J</span></label>
       <input type="text" id="ga4Input" placeholder="G-" oninput="validateInputs()">
       <span class="status" id="ga4Status"></span>
     </div>
     <div class="form-group">
-      <label>GTM 容器 ID <span class="hint">格式: GTM-XXXXXXX</span></label>
+      <label>GTM 容器 ID <span class="hint">格式: GTM-N26FR57S</span></label>
       <input type="text" id="gtmInput" placeholder="GTM-" oninput="validateInputs()">
       <span class="status" id="gtmStatus"></span>
     </div>
@@ -180,8 +180,8 @@
 
   function getConfig() {
     return {
-      ga4_measurement_id: document.getElementById('ga4Input').value.trim() || 'G-XXXXXXXXXX',
-      gtm_container_id: document.getElementById('gtmInput').value.trim() || 'GTM-XXXXXXX',
+      ga4_measurement_id: document.getElementById('ga4Input').value.trim() || 'G-9HDK6XWY7J',
+      gtm_container_id: document.getElementById('gtmInput').value.trim() || 'GTM-N26FR57S',
       adsense_publisher_id: document.getElementById('adsenseInput').value.trim() || 'ca-pub-',
       website: 'https://1-seven-lovat-14.vercel.app'
     };
@@ -234,9 +234,9 @@
   if (saved) {
     try {
       var config = JSON.parse(saved);
-      if (config.ga4_measurement_id && config.ga4_measurement_id !== 'G-XXXXXXXXXX')
+      if (config.ga4_measurement_id && config.ga4_measurement_id !== 'G-9HDK6XWY7J')
         document.getElementById('ga4Input').value = config.ga4_measurement_id;
-      if (config.gtm_container_id && config.gtm_container_id !== 'GTM-XXXXXXX')
+      if (config.gtm_container_id && config.gtm_container_id !== 'GTM-N26FR57S')
         document.getElementById('gtmInput').value = config.gtm_container_id;
       if (config.adsense_publisher_id && config.adsense_publisher_id !== 'ca-pub-')
         document.getElementById('adsenseInput').value = config.adsense_publisher_id;

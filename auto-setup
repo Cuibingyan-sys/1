@@ -44,11 +44,11 @@
   <div class="card">
     <h2>第2步：粘贴 ID</h2>
     <div class="input-group">
-      <label>GA4 测量 ID（格式: <code>G-XXXXXXXXXX</code>）</label>
+      <label>GA4 测量 ID（格式: <code>G-9HDK6XWY7J</code>）</label>
       <input type="text" id="ga4" placeholder="G-" oninput="checkAll()">
     </div>
     <div class="input-group">
-      <label>GTM 容器 ID（格式: <code>GTM-XXXXXXX</code>）</label>
+      <label>GTM 容器 ID（格式: <code>GTM-N26FR57S</code>）</label>
       <input type="text" id="gtm" placeholder="GTM-" oninput="checkAll()">
     </div>
     <div class="input-group">

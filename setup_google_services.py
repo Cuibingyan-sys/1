@@ -230,9 +230,9 @@ def update_html_files(ga4_id, gtm_id, adsense_id):
             continue
         original = content
         if ga4_id:
-            content = content.replace("G-XXXXXXXXXX", ga4_id)
+            content = content.replace("G-9HDK6XWY7J", ga4_id)
         if gtm_id:
-            content = content.replace("GTM-XXXXXXX", gtm_id)
+            content = content.replace("GTM-N26FR57S", gtm_id)
         if adsense_id:
             content = content.replace("ca-pub-XXXXXXXXXXXXXXXX", adsense_id)
         if content != original:

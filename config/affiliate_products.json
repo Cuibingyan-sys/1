@@ -1,0 +1,21 @@
+{
+  "amazon_tag": "healthtools-23",
+  "_instructions": "在亚马逊联盟后台获取真实ASIN，替换下面的占位符",
+  "products": {
+    "smart_scale": {
+      "asin": "B0XXXXXX",
+      "name": "智能体脂秤",
+      "url_template": "https://www.amazon.cn/dp/{ASIN}?tag={TAG}"
+    },
+    "fitness_band": {
+      "asin": "B0XXXXXX",
+      "name": "智能运动手环",
+      "url_template": "https://www.amazon.cn/dp/{ASIN}?tag={TAG}"
+    },
+    "protein_powder": {
+      "asin": "B0XXXXXX",
+      "name": "乳清蛋白粉",
+      "url_template": "https://www.amazon.cn/dp/{ASIN}?tag={TAG}"
+    }
+  }
+}

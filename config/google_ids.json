@@ -1,0 +1,7 @@
+{
+  "ga4_measurement_id": "G-XXXXXXXXXX",
+  "gtm_container_id": "GTM-XXXXXXX",
+  "adsense_publisher_id": "ca-pub-XXXXXXXXXXXXXXXX",
+  "website_url": "https://1-seven-lovat-14.vercel.app",
+  "_instructions": "将上面的占位符替换为你的真实ID，然后运行: python3 replace_ids.py"
+}

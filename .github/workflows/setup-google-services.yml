@@ -8,9 +8,9 @@ on:
         required: true
         type: choice
         options:
-          - '创建 GA4 + GTM + AdSense'
           - '仅更新代码 (已有ID)'
-        default: '创建 GA4 + GTM + AdSense'
+          - '创建 GA4 + GTM + AdSense (需OAuth)'
+        default: '仅更新代码 (已有ID)'
       ga4_id:
         description: 'GA4 测量 ID (如 G-XXXXXXXXXX)'
         required: false
@@ -37,52 +37,77 @@ jobs:
       - name: 安装依赖
         run: pip install requests --break-system-packages
 
-      - name: 创建 Google 服务
-        if: github.event.inputs.mode == '创建 GA4 + GTM + AdSense'
-        run: python setup_google_services.py
-        timeout-minutes: 10
-
-      - name: 仅更新代码
+      - name: 仅更新代码 (已有ID)
         if: github.event.inputs.mode == '仅更新代码 (已有ID)'
         run: |
           python3 -c "
-          import os, re
+          import json
           from pathlib import Path
-          ga4_id = '${{ github.event.inputs.ga4_id }}'
-          gtm_id = '${{ github.event.inputs.gtm_id }}'
-          adsense_id = '${{ github.event.inputs.adsense_id }}'
-          
-          for f in Path('.').glob('*.html'):
-              if f.name == 'dashboard.html':
+
+          ga4_id = '${{ github.event.inputs.ga4_id }}'.strip()
+          gtm_id = '${{ github.event.inputs.gtm_id }}'.strip()
+          adsense_id = '${{ github.event.inputs.adsense_publisher_id }}'.strip() if '${{ github.event.inputs.adsense_id }}' != 'ca-pub-XXXXXXXXXXXXXXXX' else '${{ github.event.inputs.adsense_id }}'.strip()
+
+          # Fallback to adsense_id if not provided
+          if not adsense_id or adsense_id == '':
+              adsense_id = '${{ github.event.inputs.adsense_id }}'.strip()
+
+          updated = []
+          for f in Path('.').glob('*'):
+              if f.is_dir() or f.name.startswith('.'):
                   continue
-              content = f.read_text(encoding='utf-8')
+              if f.name in ['style.css', 'main.js', 'robots.txt', 'sitemap.xml',
+                             'setup_google_services.py', 'replace_ids.py', 'google_services.json',
+                             'google1cc027e7196bb51b', 'googleAWiwVTLTNZn5SoQQpeaVSr0BrSAEG-j7momsbF1X7JM',
+                             'vercel.json', 'dashboard-data.json', 'README.md', '.gitignore',
+                             'fetch_ga4_data.py', 'fetch_adsense_data.py']:
+                  continue
+              try:
+                  content = f.read_text(encoding='utf-8')
+              except:
+                  continue
               original = content
               if ga4_id and ga4_id != 'G-XXXXXXXXXX':
                   content = content.replace('G-XXXXXXXXXX', ga4_id)
               if gtm_id and gtm_id != 'GTM-XXXXXXX':
                   content = content.replace('GTM-XXXXXXX', gtm_id)
-              if adsense_id and adsense_id != 'ca-pub-XXXXXXXXXXXXXXXX':
+              if adsense_id and adsense_id != 'ca-pub-XXXXXXXXXXXXXXXX' and adsense_id:
                   content = content.replace('ca-pub-XXXXXXXXXXXXXXXX', adsense_id)
               if content != original:
                   f.write_text(content, encoding='utf-8')
+                  updated.append(f.name)
                   print(f'Updated: {f.name}')
-          
-          import json
+
+          print(f'Total files updated: {len(updated)}')
+
           result = {
-              'ga4_measurement_id': ga4_id if ga4_id != 'G-XXXXXXXXXX' else None,
-              'gtm_container_id': gtm_id if gtm_id != 'GTM-XXXXXXX' else None,
-              'adsense_publisher_id': adsense_id if adsense_id != 'ca-pub-XXXXXXXXXXXXXXXX' else None,
+              'ga4_measurement_id': ga4_id if ga4_id and ga4_id != 'G-XXXXXXXXXX' else None,
+              'gtm_container_id': gtm_id if gtm_id and gtm_id != 'GTM-XXXXXXX' else None,
+              'adsense_publisher_id': adsense_id if adsense_id and adsense_id != 'ca-pub-XXXXXXXXXXXXXXXX' and adsense_id else None,
+              'website': 'https://1-seven-lovat-14.vercel.app',
           }
-          with open('google_services.json', 'w') as fp:
+          with open('google_services.json', 'w', encoding='utf-8') as fp:
               json.dump(result, fp, ensure_ascii=False, indent=2)
+          print('google_services.json saved')
           "
+
+      - name: 创建 Google 服务 (OAuth)
+        if: github.event.inputs.mode == '创建 GA4 + GTM + AdSense (需OAuth)'
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+        run: python setup_google_services.py
+        timeout-minutes: 10
 
       - name: 提交变更
         if: success()
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
-          git add *.html google_services.json 2>/dev/null || true
+          git add google_services.json 2>/dev/null || true
+          # Add all modified HTML files
+          git add about blog bmi bmi-guide bmr body-fat calorie calorie-guide fitness-tools ideal-weight index privacy terms deploy-guide 2>/dev/null || true
+          git add dashboard 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else

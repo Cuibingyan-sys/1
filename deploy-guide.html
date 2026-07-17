@@ -105,14 +105,14 @@ health-tools-site/
     <p>后续可添加：个性化健身计划（$9.99-$29.99）、营养食谱包（$4.99-$14.99）。</p>
   </div>
 
-  <h2>&#128295; 变现激活步骤</h2>
+  <h2>&#128295; 完整配置流程（约20分钟）</h2>
 
-  <div class="step"><span class="step-num">1</span><div><strong>注册 Google AdSense</strong> - 访问 adsense.google.com，提交网站审核。将获取的 <code>ca-pub-XXXX</code> 替换 HTML 中所有 <code>ca-pub-XXXXXXXXXXXXXXXX</code>。</div></div>
-  <div class="step"><span class="step-num">2</span><div><strong>注册联盟平台</strong> - 注册 Amazon Associates / 京东联盟 / 淘宝客，将获取的联盟 ID 替换 HTML 中的 <code>tag=healthtools-23</code>。</div></div>
-  <div class="step"><span class="step-num">3</span><div><strong>部署到 Netlify</strong>（免费） - 拖拽整个 <code>health-tools-site</code> 文件夹到 netlify.com，或连接 GitHub 仓库自动部署。</div></div>
-  <div class="step"><span class="step-num">4</span><div><strong>绑定自定义域名</strong> - 在 Netlify 设置中添加你自己的域名，提升专业度和 SEO。</div></div>
-  <div class="step"><span class="step-num">5</span><div><strong>提交搜索引擎</strong> - 在 Google Search Console 和 Bing Webmaster 提交 sitemap。</div></div>
-  <div class="step"><span class="step-num">6</span><div><strong>安装 Google Analytics</strong> - 在 <code>&lt;head&gt;</code> 中添加 GA4 代码，追踪流量数据。</div></div>
+  <div class="step"><span class="step-num">1</span><div><strong>使用配置向导</strong> - 打开 <a href="/setup-wizard" style="color:var(--accent);">/setup-wizard</a> 页面，按照指引完成所有 Google 服务配置。</div></div>
+  <div class="step"><span class="step-num">2</span><div><strong>创建 GA4 账号</strong> - 访问 <a href="https://analytics.google.com" target="_blank">analytics.google.com</a>，用 1906255309@qq.com 登录，创建账号 属性 数据流，复制 Measurement ID (G-XXXXXX)。</div></div>
+  <div class="step"><span class="step-num">3</span><div><strong>创建 GTM 容器</strong> - 访问 <a href="https://tagmanager.google.com" target="_blank">tagmanager.google.com</a>，创建 Web 容器，复制 Container ID (GTM-XXXXXX)。</div></div>
+  <div class="step"><span class="step-num">4</span><div><strong>申请 AdSense</strong> - 访问 <a href="https://adsense.google.com" target="_blank">adsense.google.com</a>，提交网站审核（1-2周），获取发布商 ID (ca-pub-XXXX)。</div></div>
+  <div class="step"><span class="step-num">5</span><div><strong>一键替换ID</strong> - 将获得的ID填入配置向导，或直接在 GitHub Actions 中触发 "仅更新代码" 工作流，自动替换所有页面中的占位符。</div></div>
+  <div class="step"><span class="step-num">6</span><div><strong>完成 Search Console 验证</strong> - 打开 <a href="https://search.google.com/search-console" target="_blank">Search Console</a>，点击完成验证，提交 sitemap.xml。</div></div>
 
   <h2>&#128200; 流量获取策略</h2>
   <div class="card">
@@ -145,13 +145,12 @@ health-tools-site/
     <strong>&#128161; 关键提示</strong>：工具站变现的核心优势是用户主动使用工具后会自然浏览广告和推荐产品。BMI 计算器是最容易获取流量的入口——每个人都会好奇自己的 BMI 值。
   </div>
 
-  <h2>&#9989; 一键部署 Netlify</h2>
+  <h2>&#9989; 一键部署 Vercel</h2>
   <ol>
-    <li>访问 <a href="https://app.netlify.com">app.netlify.com</a> 注册账号</li>
-    <li>点击 "Add new site" → "Deploy manually"</li>
-    <li>将整个 <code>health-tools-site</code> 文件夹拖拽到上传区域</li>
-    <li>等待部署完成，获得免费域名如 <code>xxx.netlify.app</code></li>
-    <li>（可选）在 Netlify 设置中绑定自己的域名</li>
+    <li>网站已部署在 <a href="https://1-seven-lovat-14.vercel.app">Vercel</a></li>
+    <li>GitHub 仓库 <code>Cuibingyan-sys/1</code> 已关联 Vercel，每次 push 自动部署</li>
+    <li>通过 GitHub Actions 工作流自动化 Google 服务配置</li>
+    <li>（可选）在 Vercel 设置中绑定自己的域名</li>
   </ol>
 
   <p style="margin-top: 32px; text-align: center;">

@@ -1,0 +1,22 @@
+{
+  "updated": "2026-07-17T00:00:00+08:00",
+  "traffic": {
+    "visitors": "N/A",
+    "pageviews": "N/A",
+    "top_pages": [],
+    "sources": [],
+    "note": "需要配置 GA4 后自动获取真实数据"
+  },
+  "revenue": {
+    "estimated_earnings": "N/A",
+    "impressions": "N/A",
+    "clicks": "N/A",
+    "note": "需要配置 AdSense 后自动获取真实数据"
+  },
+  "status": {
+    "site_online": true,
+    "ga4_configured": false,
+    "adsense_configured": false,
+    "gtm_configured": false
+  }
+}

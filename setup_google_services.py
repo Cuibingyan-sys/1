@@ -1,24 +1,25 @@
 #!/usr/bin/env python3
-"""自动创建 GA4、GTM、AdSense 并更新网站代码"""
-import json, os, re, sys, time, requests, subprocess
+"""自动创建 GA4、GTM、AdSense 并更新网站代码（安全版本 - 凭据来自环境变量）"""
+import json, os, re, sys, time, requests
 from pathlib import Path
 
-# ========== OAuth 2.0 Device Flow ==========
-CLIENT_ID = "32555940559.apps.googleusercontent.com"
-CLIENT_SECRET = "ZmssLNjJy2998hD4CTg2ejr2"
+# ========== OAuth 凭据来自环境变量（GitHub Secrets） ==========
+CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "")
+CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", "")
 
-# API scopes
 SCOPES = [
     "https://www.googleapis.com/auth/analytics.edit",
     "https://www.googleapis.com/auth/tagmanager.edit.containers",
     "https://www.googleapis.com/auth/adsense",
-    "https://www.googleapis.com/auth/cloud-platform",
 ]
 
 TOKEN_FILE = Path("/tmp/google_token.json")
 
 def get_device_code():
     """获取设备验证码"""
+    if not CLIENT_ID:
+        print("❌ 未设置 GOOGLE_CLIENT_ID 环境变量")
+        return None
     resp = requests.post("https://oauth2.googleapis.com/device/code", data={
         "client_id": CLIENT_ID,
         "scope": " ".join(SCOPES),
@@ -30,7 +31,7 @@ def get_device_code():
     print(f"\n{'='*60}")
     print(f"🔗 请打开以下链接进行授权:")
     print(f"   {data['verification_url']}")
-    print(f"\n📝 输入验证码: {data['user_code']}")
+    print(f"\n📝 验证码: {data['user_code']}")
     print(f"{'='*60}")
     print(f"\n⏳ 等待授权中... (有效期 {data['expires_in']} 秒)")
     return data
@@ -73,7 +74,6 @@ def get_access_token():
             data = json.load(f)
         if data.get("expires_at", 0) > time.time() + 60:
             return data["access_token"]
-        # Refresh token
         resp = requests.post("https://oauth2.googleapis.com/token", data={
             "client_id": CLIENT_ID,
             "client_secret": CLIENT_SECRET,
@@ -97,14 +97,9 @@ def get_access_token():
 
 # ========== GA4 创建 ==========
 def create_ga4_property(token):
-    """创建 GA4 媒体资源"""
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
     
-    # 先创建或获取账号
-    resp = requests.get(
-        "https://analyticsadmin.googleapis.com/v1beta/accounts",
-        headers=headers
-    )
+    resp = requests.get("https://analyticsadmin.googleapis.com/v1beta/accounts", headers=headers)
     if resp.status_code != 200:
         print(f"❌ 获取账号列表失败: {resp.text}")
         return None
@@ -129,7 +124,6 @@ def create_ga4_property(token):
         account_id = accounts[0]["name"].split("/")[-1]
         print(f"📋 使用已有账号: {account_id}")
     
-    # 创建 GA4 属性
     print("📝 创建 GA4 媒体资源...")
     resp = requests.post(
         "https://analyticsadmin.googleapis.com/v1beta/properties",
@@ -142,48 +136,40 @@ def create_ga4_property(token):
             "currencyCode": "CNY",
         }
     )
-    if resp.status_code == 200:
-        prop = resp.json()
-        prop_name = prop["name"]  # properties/XXXXXX
-        prop_id = prop_name.split("/")[-1]
-        print(f"✅ GA4 属性创建成功: {prop_id}")
-        
-        # 创建 Web 数据流
-        print("📝 创建 Web 数据流...")
-        resp = requests.post(
-            f"https://analyticsadmin.googleapis.com/v1beta/{prop_name}/dataStreams",
-            headers=headers,
-            json={
-                "displayName": "健康计算器主站",
-                "type": "WEB_DATA_STREAM",
-                "webStreamData": {
-                    "defaultUri": "https://1-seven-lovat-14.vercel.app"
-                }
-            }
-        )
-        if resp.status_code == 200:
-            stream = resp.json()
-            measurement_id = stream.get("webStreamData", {}).get("measurementId", "")
-            print(f"✅ 数据流创建成功, Measurement ID: {measurement_id}")
-            return {"property_id": prop_id, "measurement_id": measurement_id}
-        else:
-            print(f"❌ 创建数据流失败: {resp.text}")
-            return {"property_id": prop_id, "measurement_id": None}
-    else:
+    if resp.status_code != 200:
         print(f"❌ 创建 GA4 属性失败: {resp.text}")
         return None
+    
+    prop = resp.json()
+    prop_name = prop["name"]
+    prop_id = prop_name.split("/")[-1]
+    print(f"✅ GA4 属性创建成功: {prop_id}")
+    
+    print("📝 创建 Web 数据流...")
+    resp = requests.post(
+        f"https://analyticsadmin.googleapis.com/v1beta/{prop_name}/dataStreams",
+        headers=headers,
+        json={
+            "displayName": "健康计算器主站",
+            "type": "WEB_DATA_STREAM",
+            "webStreamData": {"defaultUri": "https://1-seven-lovat-14.vercel.app"}
+        }
+    )
+    if resp.status_code == 200:
+        stream = resp.json()
+        measurement_id = stream.get("webStreamData", {}).get("measurementId", "")
+        print(f"✅ 数据流创建成功, Measurement ID: {measurement_id}")
+        return {"property_id": prop_id, "measurement_id": measurement_id}
+    else:
+        print(f"❌ 创建数据流失败: {resp.text}")
+        return {"property_id": prop_id, "measurement_id": None}
 
 
 # ========== GTM 创建 ==========
 def create_gtm_container(token):
-    """创建 GTM 容器"""
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
     
-    # 获取或创建 GTM 账号
-    resp = requests.get(
-        "https://tagmanager.googleapis.com/tagmanager/v2/accounts",
-        headers=headers
-    )
+    resp = requests.get("https://tagmanager.googleapis.com/tagmanager/v2/accounts", headers=headers)
     if resp.status_code != 200:
         print(f"❌ 获取 GTM 账号失败: {resp.text}")
         return None
@@ -208,20 +194,14 @@ def create_gtm_container(token):
         gtm_account_id = accounts[0]["accountId"]
         print(f"📋 使用已有 GTM 账号: {gtm_account_id}")
     
-    # 创建容器
     print("📝 创建 GTM 容器...")
     resp = requests.post(
         f"https://tagmanager.googleapis.com/tagmanager/v2/accounts/{gtm_account_id}/containers",
         headers=headers,
-        json={
-            "name": "健康计算器网站",
-            "usageContext": ["web"],
-            "publicId": None,
-        }
+        json={"name": "健康计算器网站", "usageContext": ["web"]}
     )
     if resp.status_code == 200:
-        container = resp.json()
-        container_id = container.get("publicId", "")
+        container_id = resp.json().get("publicId", "")
         print(f"✅ GTM 容器创建成功: {container_id}")
         return container_id
     else:
@@ -229,14 +209,10 @@ def create_gtm_container(token):
         return None
 
 
-# ========== AdSense 申请 ==========
+# ========== AdSense ==========
 def check_adsense(token):
-    """检查 AdSense 状态"""
     headers = {"Authorization": f"Bearer {token}"}
-    resp = requests.get(
-        "https://adsense.googleapis.com/v2/accounts",
-        headers=headers
-    )
+    resp = requests.get("https://adsense.googleapis.com/v2/accounts", headers=headers)
     if resp.status_code == 200:
         accounts = resp.json().get("accounts", [])
         if accounts:
@@ -249,13 +225,20 @@ def check_adsense(token):
 
 # ========== 更新 HTML 文件 ==========
 def update_html_files(ga4_id, gtm_id, adsense_id):
-    """更新所有 HTML 文件中的 Google 服务 ID"""
     html_dir = Path(".")
     files_updated = 0
     
-    for html_file in html_dir.glob("*.html"):
-        if html_file.name == "dashboard.html":
-            continue  # Dashboard 单独处理
+    for html_file in html_dir.glob("*"):
+        # Skip non-HTML files
+        if html_file.name in [".github", "style.css", "main.js", "robots.txt", "sitemap.xml",
+                                "setup_google_services.py", "google_services.json", "google1cc027e7196bb51b",
+                                "googleAWiwVTLTNZn5SoQQpeaVSr0BrSAEG-j7momsbF1X7JM", "replace_ids.py",
+                                "vercel.json", "config"]:
+            continue
+        if html_file.is_dir():
+            continue
+        if html_file.name.startswith("."):
+            continue
         
         content = html_file.read_text(encoding="utf-8")
         original = content
@@ -265,7 +248,7 @@ def update_html_files(ga4_id, gtm_id, adsense_id):
         if gtm_id:
             content = content.replace("GTM-XXXXXXX", gtm_id)
         if adsense_id:
-            content = content.replace("ca-pub-XXXXXXXXXXXXXXXX", adsense_id)
+            content = content.replace("ca-pub-", adsense_id)
         
         if content != original:
             html_file.write_text(content, encoding="utf-8")
@@ -282,31 +265,25 @@ def main():
     print(f"   网站: https://1-seven-lovat-14.vercel.app")
     print()
     
-    # 1. 获取认证
     token = get_access_token()
     if not token:
         print("❌ 无法获取 Google 认证，退出")
         sys.exit(1)
     
-    # 2. 创建 GA4
     print("\n📊 [1/4] 创建 Google Analytics 4...")
     ga4_result = create_ga4_property(token)
     ga4_id = ga4_result.get("measurement_id") if ga4_result else None
     
-    # 3. 创建 GTM
     print("\n🏷️ [2/4] 创建 Google Tag Manager...")
     gtm_id = create_gtm_container(token)
     
-    # 4. 检查 AdSense
     print("\n💰 [3/4] 检查 Google AdSense...")
     adsense_id = check_adsense(token)
     
-    # 5. 更新文件
     print("\n📝 [4/4] 更新网站代码...")
     if ga4_id or gtm_id or adsense_id:
         update_html_files(ga4_id, gtm_id, adsense_id)
     
-    # 6. 输出结果
     print(f"\n{'='*60}")
     print("📋 设置结果汇总:")
     print(f"   GA4 测量 ID:     {ga4_id or '❌ 未创建'}")
@@ -314,7 +291,6 @@ def main():
     print(f"   AdSense 发布商:  {adsense_id or '⚠️ 需要手动申请'}")
     print(f"{'='*60}")
     
-    # 7. 保存结果到文件
     result = {
         "ga4_measurement_id": ga4_id,
         "gtm_container_id": gtm_id,

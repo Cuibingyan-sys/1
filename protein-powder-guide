@@ -153,22 +153,49 @@ var _hmt = _hmt || [];
       <a href="bmr" class="cta-btn">计算基础代谢 &#8594;</a>
     </section>
   
-<!-- Adsterra Banner Ad -->
-<div id="adsterra-banner" style="text-align:center;margin:20px 0;min-height:90px;background:#FFF9E6;border:1px dashed #F0D060;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:#999;">
-  <a href="https://adsterra.com/?ref=YOUR_REFERRAL" target="_blank" rel="nofollow">广告位 — 通过 Adsterra 投放</a>
+<!-- 广告投放位 -->
+<div class="ad-banner-native">
+  <div class="ad-banner-badge">广告投放</div>
+  <div class="ad-banner-title">精选健康好物推荐</div>
+  <div class="ad-banner-grid">
+    <a href="https://search.jd.com/Search?keyword=%E6%99%BA%E8%83%BD%E4%BD%93%E8%84%82%E7%A7%A4&enc=utf-8" target="_blank" rel="nofollow sponsored" class="ad-banner-card" onclick="trackAdClick('banner_scale')">
+      <span class="ad-banner-icon">⚖️</span>
+      <div>
+        <h4>智能体脂秤</h4>
+        <p>15+项身体数据精准测量</p>
+        <span class="ad-banner-price">¥99起</span>
+      </div>
+    </a>
+    <a href="https://search.jd.com/Search?keyword=%E6%99%BA%E8%83%BD%E8%BF%90%E5%8A%A8%E6%89%8B%E7%8E%AF&enc=utf-8" target="_blank" rel="nofollow sponsored" class="ad-banner-card" onclick="trackAdClick('banner_band')">
+      <span class="ad-banner-icon">⌚</span>
+      <div>
+        <h4>智能运动手环</h4>
+        <p>全天心率+100+运动模式</p>
+        <span class="ad-banner-price">¥149起</span>
+      </div>
+    </a>
+    <a href="https://search.jd.com/Search?keyword=%E4%B9%B3%E6%B8%85%E8%9B%8B%E7%99%BD%E7%B2%89&enc=utf-8" target="_blank" rel="nofollow sponsored" class="ad-banner-card" onclick="trackAdClick('banner_protein')">
+      <span class="ad-banner-icon">🥛</span>
+      <div>
+        <h4>乳清蛋白粉</h4>
+        <p>增肌减脂必备营养补充</p>
+        <span class="ad-banner-price">¥89起</span>
+      </div>
+    </a>
+    <a href="https://search.jd.com/Search?keyword=%E5%81%A5%E8%BA%AB%E6%88%BF%E5%99%A8%E6%9D%90&enc=utf-8" target="_blank" rel="nofollow sponsored" class="ad-banner-card" onclick="trackAdClick('banner_gym')">
+      <span class="ad-banner-icon">🏋️</span>
+      <div>
+        <h4>家用健身器材</h4>
+        <p>哑铃/瑜伽垫/弹力带</p>
+        <span class="ad-banner-price">¥29起</span>
+      </div>
+    </a>
+  </div>
+  <div class="ad-banner-footer">
+    <span>🔗 以上商品来自京东联盟，购买可获得佣金</span>
+    <a href="shop.html" class="ad-banner-more">查看更多好物 →</a>
+  </div>
 </div>
-<script>
-(function(){
-  var s = document.createElement('script');
-  s.src = 'https://pl' + 'AY.ads' + 'terra.com/ads/YOUR_ADSTERRA_ID.js';
-  s.async = true;
-  s.onload = function(){
-    var el = document.getElementById('adsterra-banner');
-    if(el) el.style.display = 'none';
-  };
-  document.head.appendChild(s);
-})();
-</script>
 
   </main>
 

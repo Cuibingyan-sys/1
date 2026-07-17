@@ -1278,6 +1278,104 @@ img { max-width: 100%; height: auto; }
   animation: pulse-glow 2s infinite;
 }
 
+/* --- Native Ad Banner --- */
+.ad-banner-native {
+  background: linear-gradient(135deg, #FFF9E6 0%, #FFF3E0 50%, #FFF8E1 100%);
+  border: 1px solid #F0D060;
+  border-radius: 16px;
+  padding: 24px;
+  margin: 32px 0;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(240,208,96,0.15);
+}
+.ad-banner-badge {
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  background: linear-gradient(135deg, #F39C12, #E67E22);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 12px;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 8px rgba(243,156,18,0.3);
+}
+.ad-banner-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #B7950B;
+  margin-bottom: 16px;
+  padding-right: 80px;
+}
+.ad-banner-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.ad-banner-card {
+  background: #fff;
+  border: 1px solid #F0E0B0;
+  border-radius: 12px;
+  padding: 14px;
+  text-decoration: none;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.25s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.ad-banner-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(240,208,96,0.25);
+  border-color: #F39C12;
+}
+.ad-banner-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+.ad-banner-card h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 2px;
+  color: #2C3E50;
+}
+.ad-banner-card p {
+  font-size: 0.75rem;
+  color: #7F8C8D;
+  margin-bottom: 4px;
+}
+.ad-banner-price {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #E67E22;
+  background: #FFF3E0;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+.ad-banner-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px dashed #F0D060;
+  font-size: 0.78rem;
+  color: #999;
+}
+.ad-banner-more {
+  color: #F39C12;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.ad-banner-more:hover {
+  color: #E67E22;
+  text-decoration: underline;
+}
+
 /* --- Responsive Enhancements --- */
 @media (max-width: 768px) {
   .shop-grid { grid-template-columns: 1fr; }
@@ -1288,10 +1386,14 @@ img { max-width: 100%; height: auto; }
   .cookie-banner { padding: 12px 16px; flex-direction: column; text-align: center; }
   .hero { padding: 40px 16px 28px; }
   .hero h1 { font-size: 1.6rem; }
+  .ad-banner-grid { grid-template-columns: repeat(2, 1fr); }
+  .ad-banner-title { padding-right: 0; }
 }
 
 @media (max-width: 480px) {
   .social-proof-stat .stat-num { font-size: 1.4rem; }
   .hero h1 { font-size: 1.4rem; }
   .hero p { font-size: 0.9rem; }
+  .ad-banner-grid { grid-template-columns: 1fr; }
+  .ad-banner-footer { flex-direction: column; gap: 8px; text-align: center; }
 }

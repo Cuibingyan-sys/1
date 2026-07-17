@@ -314,6 +314,34 @@
   .refresh-btn.refreshing .spinner { display: inline-block; }
   .refresh-btn.refreshing .rf-text  { display: none; }
 
+  /* ===== Config Grid ===== */
+  .config-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .config-item {
+    background: #F9FAFB;
+    border-radius: 10px;
+    padding: 14px 16px;
+    border: 1px solid #E5E7EB;
+  }
+  .config-label {
+    font-size: 11px;
+    color: #9CA3AF;
+    font-weight: 500;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .config-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1F2937;
+    word-break: break-all;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  }
+
   /* ===== Footer ===== */
   .footer {
     text-align: center;
@@ -359,6 +387,9 @@
       grid-column: 1 / -1;
     }
     .traffic-metrics {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .config-grid {
       grid-template-columns: repeat(2, 1fr);
     }
     .header h1 {
@@ -429,21 +460,21 @@
       <div class="icon">&#128269;</div>
       <div class="label">SEO 状态</div>
       <div class="value">
-        <span class="status-dot dot-warning"></span><span class="text-warning">待验证</span>
+        <span class="status-dot dot-online"></span><span class="text-online">已验证</span>
       </div>
     </div>
     <div class="status-card">
       <div class="icon">&#128200;</div>
       <div class="label">GA4 状态</div>
       <div class="value">
-        <span class="status-dot dot-warning"></span><span class="text-warning">等待配置</span>
+        <span class="status-dot dot-online"></span><span class="text-online">已配置</span>
       </div>
     </div>
     <div class="status-card">
       <div class="icon">&#128176;</div>
       <div class="label">AdSense 状态</div>
       <div class="value">
-        <span class="status-dot dot-warning"></span><span class="text-warning">等待配置</span>
+        <span class="status-dot dot-online"></span><span class="text-online">已配置</span>
       </div>
     </div>
   </div>
@@ -473,8 +504,8 @@
   <div class="traffic-card">
     <div class="placeholder">
       <div class="ph-icon">&#128200;</div>
-      <div class="ph-text">等待配置 GA4</div>
-      <div class="ph-sub">接入 Google Analytics 4 后将在此展示实时流量数据</div>
+      <div class="ph-text">GA4 已接入 (G-9HDK6XWY7J)，数据实时收集中</div>
+      <div class="ph-sub">流量数据将在 24-48 小时内开始显示</div>
     </div>
     <div class="traffic-metrics">
       <div class="metric-item">
@@ -507,17 +538,17 @@
           <div class="ri-time">每日自动运行 · 00:00</div>
         </div>
       </div>
-      <span class="ri-status ok">正常</span>
+      <span class="ri-status ok">运行中</span>
     </div>
     <div class="report-item">
       <div class="ri-left">
         <div class="ri-icon ri-green">&#128200;</div>
         <div>
           <div class="ri-title">流量摘要报告</div>
-          <div class="ri-time">每日自动运行 · 08:00</div>
+          <div class="ri-time">每日自动运行 · 08:00 / 16:00</div>
         </div>
       </div>
-      <span class="ri-status warn">等待配置</span>
+      <span class="ri-status ok">运行中</span>
     </div>
     <div class="report-item">
       <div class="ri-left">
@@ -527,7 +558,7 @@
           <div class="ri-time">每日自动运行 · 06:00</div>
         </div>
       </div>
-      <span class="ri-status info">待启用</span>
+      <span class="ri-status ok">已启用</span>
     </div>
     <div class="report-item">
       <div class="ri-left">
@@ -537,7 +568,7 @@
           <div class="ri-time">每日自动运行 · 09:00</div>
         </div>
       </div>
-      <span class="ri-status warn">等待配置</span>
+      <span class="ri-status ok">运行中</span>
     </div>
   </div>
 
@@ -547,6 +578,37 @@
       <span class="spinner" id="spinner"></span>
       <span class="rf-text">&#128260; 刷新状态</span>
     </button>
+  </div>
+
+  <!-- Config Info -->
+  <div class="traffic-card" style="margin-top:16px;">
+    <h2 class="section-title" style="margin-top:0;">&#9881; 当前配置信息</h2>
+    <div class="config-grid">
+      <div class="config-item">
+        <div class="config-label">GA4 衡量ID</div>
+        <div class="config-value">G-9HDK6XWY7J</div>
+      </div>
+      <div class="config-item">
+        <div class="config-label">GTM 容器ID</div>
+        <div class="config-value">GTM-N26FR57S</div>
+      </div>
+      <div class="config-item">
+        <div class="config-label">AdSense 发布商ID</div>
+        <div class="config-value">ca-pub-5918744</div>
+      </div>
+      <div class="config-item">
+        <div class="config-label">百度统计ID</div>
+        <div class="config-value">ed8ab485d1d0f7834eec48d97566623c</div>
+      </div>
+      <div class="config-item">
+        <div class="config-label">京东联盟ID</div>
+        <div class="config-value">2038380499</div>
+      </div>
+      <div class="config-item">
+        <div class="config-label">Google Site Verification</div>
+        <div class="config-value">AWiwVTLTNZn5SoUQpeaVSr0BrSAEG-j7momsbF1X7JM</div>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -643,7 +705,17 @@
   window.addEventListener('DOMContentLoaded', function() {
     checkSiteStatus();
     loadDashboardData();
+    // 初始化已配置状态
+    updateConfiguredStatus();
   });
+
+  function updateConfiguredStatus() {
+    // SEO 已验证
+    var cards = document.querySelectorAll('.status-card');
+    if (cards[1]) cards[1].style.borderTop = '3px solid #10B981';
+    if (cards[2]) cards[2].style.borderTop = '3px solid #10B981';
+    if (cards[3]) cards[3].style.borderTop = '3px solid #10B981';
+  }
 </script>
 
 </body>

@@ -28,7 +28,7 @@
 var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?BAID_TONGJI_ID";
+  hm.src = "https://hm.baidu.com/hm.js?ed8ab485d1d0f7834eec48d97566623c";
   var s = document.getElementsByTagName("script")[0];
   s.parentNode.insertBefore(hm, s);
 })();

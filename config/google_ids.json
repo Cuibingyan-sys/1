@@ -1,7 +1,10 @@
 {
-  "ga4_measurement_id": "G-XXXXXXXXXX",
-  "gtm_container_id": "GTM-XXXXXXX",
-  "adsense_publisher_id": "ca-pub-XXXXXXXXXXXXXXXX",
+  "ga4_measurement_id": "G-9HDK6XWY7J",
+  "gtm_container_id": "GTM-N26FR57S",
+  "adsense_publisher_id": "ca-pub-5918744",
   "website_url": "https://1-seven-lovat-14.vercel.app",
-  "_instructions": "将上面的占位符替换为你的真实ID，然后运行: python3 replace_ids.py"
+  "ga4_property_id": "5918744",
+  "jd_union_id": "2038380499",
+  "baidu_analytics_id": "ed8ab485d1d0f7834eec48d97566623c",
+  "_instructions": "所有ID已配置完成。如需修改GA4/AdSense，请更新对应值。"
 }

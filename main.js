@@ -72,3 +72,37 @@ function switchDonate(type) {
   document.getElementById('donate-' + type).classList.add('show');
   event.target.classList.add('active');
 }
+
+// Back to Top
+(function() {
+  var btn = document.getElementById('backToTop');
+  if (!btn) return;
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) {
+      btn.classList.add('show');
+    } else {
+      btn.classList.remove('show');
+    }
+  });
+  btn.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+
+// Cookie Consent
+function acceptCookies() {
+  var banner = document.getElementById('cookieBanner');
+  if (banner) banner.classList.remove('show');
+  localStorage.setItem('cookies_accepted', 'true');
+  try { gtag('event', 'cookies_accepted'); } catch(e) {}
+}
+
+(function() {
+  var banner = document.getElementById('cookieBanner');
+  if (!banner) return;
+  if (localStorage.getItem('cookies_accepted') === 'true') {
+    banner.style.display = 'none';
+  } else {
+    setTimeout(function() { banner.classList.add('show'); }, 1000);
+  }
+})();

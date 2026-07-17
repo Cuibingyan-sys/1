@@ -1,7 +1,7 @@
 {
   "jd_affiliate": {
-    "_instructions": "在京东联盟(union.jd.com)注册后，将联盟ID填入url_template中替换PLACEHOLDER",
-    "union_id": "PLACEHOLDER",
+    "_instructions": "京东联盟ID已配置，搜索链接自动跳转京东",
+    "union_id": "2038380499",
     "website": "https://1-seven-lovat-14.vercel.app"
   },
   "products": {

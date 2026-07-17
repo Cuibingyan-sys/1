@@ -1,115 +1,35 @@
-name: 每日流量与收益报告
+# 每日流量收益报告 - GitHub Actions
+# 每天北京时间 09:00 自动运行
+
+name: Daily Revenue Report
 
 on:
   schedule:
-    - cron: '0 0 * * *'   # 北京时间 08:00
-    - cron: '0 8 * * *'   # 北京时间 16:00 (二次检查)
-  workflow_dispatch:
+    - cron: '0 1 * * *'  # UTC 01:00 = 北京时间 09:00
+  workflow_dispatch:  # 手动触发
+
+permissions:
+  contents: write
 
 jobs:
   report:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      issues: write
     steps:
-      - name: 检出代码
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: 设置 Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: 安装依赖
-        run: pip install requests --quiet
+      - name: Generate Report
+        run: python3 scripts/daily_report.py
 
-      - name: 生成每日报告
-        env:
-          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
-          ADSENSE_ACCOUNT_ID: ${{ secrets.ADSENSE_ACCOUNT_ID }}
-          GOOGLE_ACCESS_TOKEN: ${{ secrets.GOGLE_ACCESS_TOKEN }}
-        run: python3 generate_daily_report.py
-
-      - name: 发送邮件通知
-        continue-on-error: true
-        env:
-          QQ_SMTP_USER: ${{ secrets.QQ_SMTP_USER }}
-          QQ_SMTP_PASS: ${{ secrets.QQ_SMTP_PASS }}
-        run: python3 send_email_notification.py
-
-      - name: 飞书 Webhook 通知
-        continue-on-error: true
-        env:
-          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
-          FEISHU_CHAT_ID: ${{ secrets.FEISHU_CHAT_ID }}
-        run: python3 send_feishu_notification.py
-
-      - name: 创建 GitHub Issue 通知
-        continue-on-error: true
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            const report = JSON.parse(fs.readFileSync('reports/latest.json', 'utf8'));
-
-            const date = report.date;
-            const traffic = report.traffic;
-            const revenue = report.revenue;
-            const status = report.status;
-
-            const body = `## 📊 每日流量报告 — ${date}
-
-            ### 🚀 流量数据
-            | 指标 | 数值 |
-            |------|------|
-            | 访客数 | ${traffic.visitors} |
-            | 页面浏览 | ${traffic.pageviews} |
-            | 数据来源 | ${traffic.note} |
-
-            ### 💰 收益数据
-            | 指标 | 数值 |
-            |------|------|
-            | 预估收入 | ${revenue.estimated_earnings} |
-            | 展示次数 | ${revenue.impressions} |
-            | 点击次数 | ${revenue.clicks} |
-
-            ### 📡 服务状态
-            - 网站在线: ${status.site_online ? '✅' : '❌'}
-            - GA4 已配置: ${status.ga4_configured ? '✅' : '❌'}
-            - GTM 已配置: ${status.gtm_configured ? '✅' : '❌'}
-            - AdSense 已配置: ${status.adsense_configured ? '✅' : '❌'}
-
-            ---
-            🌐 网站: https://1-seven-lovat-14.vercel.app
-            📋 仪表盘: https://1-seven-lovat-14.vercel.app/dashboard.html
-            `;
-
-            const { data: issues } = await github.rest.search.issuesAndPullRequests({
-              q: `每日流量报告 ${date} repo:${context.repo.owner}/${context.repo.repo} type:issue`
-            });
-
-            if (issues.total_count === 0) {
-              await github.rest.issues.create({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                title: `📊 每日流量报告 — ${date}`,
-                body: body,
-                labels: ['report', 'daily']
-              });
-              console.log('Issue created successfully');
-            } else {
-              console.log('Issue already exists for today');
-            }
-
-      - name: 提交报告
+      - name: Commit Report
         run: |
           git config user.name "Daily Report Bot"
-          git config user.email "report@healthtools.bot"
-          git add reports/ dashboard-data.json 2>/dev/null || true
-          if git diff --staged --quiet; then
-            echo "No changes"
-          else
-            git commit -m "Daily report: $(date +%Y-%m-%d)"
-            git push
-          fi
+          git config user.email "bot@healthcalc.com"
+          git add reports/
+          git diff --staged --quiet || git commit -m "📊 每日报告 $(date +%Y-%m-%d)"
+          git push

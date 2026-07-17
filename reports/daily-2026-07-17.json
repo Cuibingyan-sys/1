@@ -13,12 +13,12 @@
     "estimated_earnings": "N/A",
     "impressions": "N/A",
     "clicks": "N/A",
-    "note": "需要配置 AdSense 后自动获取真实数据"
+    "note": "AdSense 已配置 (ca-pub-5918744)，审批通过后自动展示广告"
   },
   "status": {
     "site_online": true,
     "ga4_configured": true,
-    "adsense_configured": false,
+    "adsense_configured": true,
     "gtm_configured": true
   }
 }

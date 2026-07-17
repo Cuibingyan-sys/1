@@ -1,22 +1,22 @@
 {
-  "updated": "2026-07-17T10:25:34.471417+08:00",
+  "updated": "2026-07-18T05:33:05.873542+08:00",
   "traffic": {
-    "visitors": "N/A",
-    "pageviews": "N/A",
+    "visitors": "等待数据",
+    "pageviews": "等待数据",
     "top_pages": [],
     "sources": [],
-    "note": "需要配置 GA4 后自动获取真实数据"
+    "note": "百度统计 + GA4 已接入，数据延迟 24-48 小时"
   },
   "revenue": {
-    "estimated_earnings": "N/A",
-    "impressions": "N/A",
-    "clicks": "N/A",
-    "note": "需要配置 AdSense 后自动获取真实数据"
+    "estimated_earnings": "等待数据",
+    "impressions": "等待数据",
+    "clicks": "等待数据",
+    "note": "AdSense 已配置 (ca-pub-5918744)，审批通过后自动展示广告"
   },
   "status": {
     "site_online": true,
     "ga4_configured": true,
-    "adsense_configured": false,
+    "adsense_configured": true,
     "gtm_configured": true
   }
 }

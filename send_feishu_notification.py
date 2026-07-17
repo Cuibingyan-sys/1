@@ -4,7 +4,7 @@ import json, os, subprocess, sys
 from pathlib import Path
 from datetime import datetime
 
-CHAT_ID = "oc_be97e9685d74ddae2c126dbf31ac744b"
+CHAT_ID = "oc_c449875cc7737a8c2295a6310c482023"
 REPORT_PATH = Path("reports/latest.json")
 SITE_URL = "https://1-seven-lovat-14.vercel.app"
 DASHBOARD_URL = f"{SITE_URL}/dashboard.html"
@@ -60,7 +60,7 @@ try:
         ["lark-cli", "im", "+messages-send",
          "--chat-id", CHAT_ID,
          "--markdown", msg,
-         "--as", "user"],
+         "--as", "bot"],
         capture_output=True, text=True, timeout=30,
         env={**os.environ,
              "LARKSUITE_CLI_NO_UPDATE_NOTIFIER": "1",

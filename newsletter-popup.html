@@ -1,0 +1,48 @@
+<!-- 邮件订阅弹窗组件 - 可嵌入任意页面 -->
+<div id="newsletter-overlay" class="newsletter-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:9999;justify-content:center;align-items:center;">
+  <div class="newsletter-popup" style="background:#fff;border-radius:16px;padding:32px;max-width:420px;width:90%;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.3);text-align:center;">
+    <button onclick="closeNewsletter()" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:24px;cursor:pointer;color:#9ca3af;">&times;</button>
+    <div style="font-size:48px;margin-bottom:12px;">📬</div>
+    <h3 style="margin:0 0 8px;font-size:1.3rem;color:#1f2937;">免费获取健康减脂指南</h3>
+    <p style="color:#6b7280;font-size:0.9rem;margin:0 0 20px;line-height:1.5;">每周推送科学减脂技巧、食谱和工具更新，<br>帮你轻松瘦下来！</p>
+    <form id="newsletter-form" onsubmit="return submitNewsletter(event)" style="display:flex;flex-direction:column;gap:10px;">
+      <input type="email" id="newsletter-email" placeholder="输入你的邮箱地址" required style="padding:12px 16px;border:2px solid #e5e7eb;border-radius:8px;font-size:1rem;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='#059669'" onblur="this.style.borderColor='#e5e7eb'">
+      <button type="submit" style="padding:12px;background:#059669;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;transition:background 0.2s;">免费订阅</button>
+    </form>
+    <p style="font-size:0.72rem;color:#9ca3af;margin:12px 0 0;">不打扰，每周一封，随时可退订</p>
+    <div id="newsletter-success" style="display:none;padding:24px 0;">
+      <div style="font-size:48px;">✅</div>
+      <h4 style="color:#059669;margin:8px 0;">订阅成功！</h4>
+      <p style="color:#6b7280;font-size:0.9rem;">请查收确认邮件，感谢订阅！</p>
+    </div>
+  </div>
+</div>
+<script>
+function showNewsletter() {
+  document.getElementById('newsletter-overlay').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  if (typeof gtag !== 'undefined') { gtag('event', 'newsletter_show'); }
+}
+function closeNewsletter() {
+  document.getElementById('newsletter-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+  localStorage.setItem('nl_closed', Date.now());
+}
+function submitNewsletter(e) {
+  e.preventDefault();
+  var email = document.getElementById('newsletter-email').value;
+  if (typeof gtag !== 'undefined') { gtag('event', 'newsletter_submit', { event_label: email }); }
+  if (typeof _hmt !== 'undefined') { _hmt.push(['_trackEvent', 'newsletter', 'submit', email]); }
+  document.getElementById('newsletter-form').style.display = 'none';
+  document.getElementById('newsletter-success').style.display = 'block';
+  setTimeout(function() { closeNewsletter(); }, 3000);
+  return false;
+}
+// 20秒后自动弹出，且24小时内不重复
+setTimeout(function() {
+  var lastClosed = localStorage.getItem('nl_closed');
+  if (!lastClosed || (Date.now() - parseInt(lastClosed)) > 86400000) {
+    showNewsletter();
+  }
+}, 20000);
+</script>

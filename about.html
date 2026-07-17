@@ -80,6 +80,28 @@ var _hmt = _hmt || [];
       <p>如果您有任何问题或建议，欢迎通过以下方式联系我们：</p>
       <p>&#128231; 邮箱：1906255309@qq.com</p>
     </div>
+
+    <!-- AdSense 广告 -->
+    <ins class="adsbygoogle" style="display:block; text-align:center; margin:24px 0;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-5918744" data-ad-slot="1234567892"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+    <!-- 打赏支持 -->
+    <div class="donate-section" style="margin: 30px 0; padding: 24px; background: #f9fafb; border-radius: 12px; text-align: center;">
+      <h3 style="margin: 0 0 8px;">💝 支持我们</h3>
+      <p style="color: #6b7280; font-size: 0.9rem; margin: 0 0 16px;">如果这些免费工具对你有帮助，欢迎赞赏支持</p>
+      <div class="donate-tabs" style="display: flex; gap: 8px; justify-content: center; margin-bottom: 12px;">
+        <button class="donate-tab active" onclick="switchDonate('alipay')" style="padding: 6px 20px; border: 1px solid #d1d5db; border-radius: 6px; background: #059669; color: #fff; cursor: pointer; font-weight: 600;">支付宝</button>
+        <button class="donate-tab" onclick="switchDonate('wechat')" style="padding: 6px 20px; border: 1px solid #d1d5db; border-radius: 6px; background: #fff; cursor: pointer; font-weight: 600;">微信</button>
+      </div>
+      <div id="donate-alipay" class="donate-qr show">
+        <img src="donate-alipay-qr.svg" alt="支付宝打赏码" style="width: 180px; height: 180px; border-radius: 8px;" loading="lazy">
+        <p style="font-size: 0.8rem; color: #6b7280; margin-top: 6px;">📱 支付宝扫码赞赏</p>
+      </div>
+      <div id="donate-wechat" class="donate-qr" style="display: none;">
+        <img src="donate-wechat-qr.svg" alt="微信打赏码" style="width: 180px; height: 180px; border-radius: 8px;" loading="lazy">
+        <p style="font-size: 0.8rem; color: #6b7280; margin-top: 6px;">💬 微信扫码赞赏</p>
+      </div>
+    </div>
   </main>
 
   <footer class="site-footer">
@@ -94,14 +116,20 @@ var _hmt = _hmt || [];
 
 <!-- Baidu Auto Push -->
 <script>
+function switchDonate(type) {
+  var tabs = document.querySelectorAll('.donate-tab');
+  tabs.forEach(function(t,i) {
+    t.style.background = (type === 'alipay' && i === 0) || (type === 'wechat' && i === 1) ? '#059669' : '#fff';
+    t.style.color = (type === 'alipay' && i === 0) || (type === 'wechat' && i === 1) ? '#fff' : '#333';
+  });
+  document.getElementById('donate-alipay').style.display = type === 'alipay' ? 'block' : 'none';
+  document.getElementById('donate-wechat').style.display = type === 'wechat' ? 'block' : 'none';
+}
 (function(){
   var bp = document.createElement('script');
   var curProtocol = window.location.protocol.split(':')[0];
-  if (curProtocol === 'https') {
-    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
-  } else {
-    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-  }
+  if (curProtocol === 'https') { bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'; }
+  else { bp.src = 'http://push.zhanzhang.baidu.com/push.js'; }
   var s = document.getElementsByTagName("script")[0];
   s.parentNode.insertBefore(bp, s);
 })();

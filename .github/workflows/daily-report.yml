@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      issues: write
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
@@ -25,6 +26,76 @@ jobs:
           ADSENSE_ACCOUNT_ID: ${{ secrets.ADSENSE_ACCOUNT_ID }}
           GOOGLE_ACCESS_TOKEN: ${{ secrets.GOGLE_ACCESS_TOKEN }}
         run: python3 generate_daily_report.py
+
+      - name: 发送邮件通知
+        continue-on-error: true
+        env:
+          QQ_SMTP_USER: ${{ secrets.QQ_SMTP_USER }}
+          QQ_SMTP_PASS: ${{ secrets.QQ_SMTP_PASS }}
+        run: python3 send_email_notification.py
+
+      - name: 飞书 Webhook 通知
+        continue-on-error: true
+        env:
+          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
+        run: python3 send_feishu_notification.py
+
+      - name: 创建 GitHub Issue 通知
+        continue-on-error: true
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('reports/latest.json', 'utf8'));
+
+            const date = report.date;
+            const traffic = report.traffic;
+            const revenue = report.revenue;
+            const status = report.status;
+
+            const body = `## 📊 每日流量报告 — ${date}
+
+            ### 🚀 流量数据
+            | 指标 | 数值 |
+            |------|------|
+            | 访客数 | ${traffic.visitors} |
+            | 页面浏览 | ${traffic.pageviews} |
+            | 数据来源 | ${traffic.note} |
+
+            ### 💰 收益数据
+            | 指标 | 数值 |
+            |------|------|
+            | 预估收入 | ${revenue.estimated_earnings} |
+            | 展示次数 | ${revenue.impressions} |
+            | 点击次数 | ${revenue.clicks} |
+
+            ### 📡 服务状态
+            - 网站在线: ${status.site_online ? '✅' : '❌'}
+            - GA4 已配置: ${status.ga4_configured ? '✅' : '❌'}
+            - GTM 已配置: ${status.gtm_configured ? '✅' : '❌'}
+            - AdSense 已配置: ${status.adsense_configured ? '✅' : '❌'}
+
+            ---
+            🌐 网站: https://1-seven-lovat-14.vercel.app
+            📋 仪表盘: https://1-seven-lovat-14.vercel.app/dashboard-data.json
+            `;
+
+            const { data: issues } = await github.rest.search.issuesAndPullRequests({
+              q: `每日流量报告 ${date} repo:${context.repo.owner}/${context.repo.repo} type:issue`
+            });
+
+            if (issues.total_count === 0) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `📊 每日流量报告 — ${date}`,
+                body: body,
+                labels: ['report', 'daily']
+              });
+              console.log('Issue created successfully');
+            } else {
+              console.log('Issue already exists for today');
+            }
 
       - name: 提交报告
         run: |

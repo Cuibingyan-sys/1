@@ -3,371 +3,86 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>一键设置 Google 服务</title>
+<title>快速配置 - 健康计算器</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; color: #1F2937; line-height: 1.6; }
-  .container { max-width: 720px; margin: 0 auto; padding: 40px 20px; }
-  .header { text-align: center; color: #fff; padding: 40px 0 20px; }
-  .header h1 { font-size: 28px; font-weight: 700; }
-  .header p { font-size: 16px; opacity: 0.9; margin-top: 8px; }
-  .card { background: #fff; border-radius: 16px; padding: 28px; margin-bottom: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
-  .card h2 { font-size: 18px; font-weight: 700; margin-bottom: 12px; color: #374151; }
-  .step-row { display: flex; align-items: flex-start; gap: 12px; padding: 14px 0; border-bottom: 1px solid #F3F4F6; }
-  .step-row:last-child { border-bottom: none; }
-  .step-num { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
-  .step-info { flex: 1; }
-  .step-info strong { font-size: 15px; display: block; margin-bottom: 4px; }
-  .step-info p { font-size: 13px; color: #6B7280; margin-bottom: 6px; }
-  .step-info a { color: #667eea; font-weight: 600; text-decoration: none; font-size: 13px; }
-  .step-info a:hover { text-decoration: underline; }
-  .form-group { margin-bottom: 16px; }
-  .form-group label { display: block; font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 6px; }
-  .form-group input { width: 100%; padding: 12px 16px; border: 2px solid #E5E7EB; border-radius: 10px; font-size: 16px; font-family: "SF Mono", "Consolas", monospace; transition: border-color 0.2s; }
-  .form-group input:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.15); }
-  .form-group input.valid { border-color: #10B981; }
-  .btn { padding: 14px 28px; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; border: none; font-family: inherit; transition: all 0.2s; width: 100%; }
-  .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; box-shadow: 0 4px 14px rgba(102,126,234,0.35); }
-  .btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(102,126,234,0.45); }
-  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-  .status-box { padding: 12px 16px; border-radius: 10px; font-size: 14px; margin-bottom: 12px; display: none; }
-  .status-box.show { display: block; }
-  .status-box.info { background: #DBEAFE; color: #1E40AF; }
-  .status-box.success { background: #D1FAE5; color: #065F46; }
-  .status-box.error { background: #FEE2E2; color: #991B1B; }
-  .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
-  .result-item { background: #F9FAFB; padding: 14px; border-radius: 10px; text-align: center; }
-  .result-item .r-label { font-size: 12px; color: #6B7280; }
-  .result-item .r-value { font-size: 18px; font-weight: 700; color: #667eea; font-family: "SF Mono", "Consolas", monospace; word-break: break-all; }
-  @media (max-width: 640px) { .card { padding: 20px; } .header h1 { font-size: 22px; } }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+  .container { max-width: 500px; margin: 0 auto; }
+  .header { text-align: center; color: #fff; padding: 30px 0 20px; }
+  .header h1 { font-size: 24px; }
+  .header p { font-size: 14px; opacity: 0.9; margin-top: 6px; }
+  .card { background: #fff; border-radius: 14px; padding: 24px; margin-bottom: 16px; box-shadow: 0 6px 24px rgba(0,0,0,0.12); }
+  .card h2 { font-size: 16px; margin-bottom: 12px; color: #374151; }
+  .btn { display: block; width: 100%; padding: 15px; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; border: none; text-align: center; text-decoration: none; margin-bottom: 10px; transition: all 0.2s; }
+  .btn-green { background: #10B981; color: #fff; }
+  .btn-blue { background: #3B82F6; color: #fff; }
+  .btn-purple { background: #8B5CF6; color: #fff; }
+  .btn-orange { background: #F59E0B; color: #fff; }
+  .btn:hover { transform: translateY(-1px); opacity: 0.95; }
+  .input-group { margin-bottom: 14px; }
+  .input-group label { font-size: 13px; font-weight: 600; color: #374151; display: block; margin-bottom: 4px; }
+  .input-group input { width: 100%; padding: 12px; border: 2px solid #E5E7EB; border-radius: 8px; font-size: 15px; font-family: monospace; }
+  .input-group input:focus { outline: none; border-color: #667eea; }
+  code { background: #F3F4F6; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
 </style>
 </head>
 <body>
 <div class="container">
   <div class="header">
-    <h1>一键设置 Google 服务</h1>
-    <p>用你的 Google 账号授权，自动创建 GA4 + GTM + AdSense</p>
+    <h1>3步上线</h1>
+    <p>打开链接创建账号，复制ID，粘贴到下方</p>
   </div>
 
   <div class="card">
-    <h2>操作步骤</h2>
-    <div class="step-row">
-      <div class="step-num">1</div>
-      <div class="step-info">
-        <strong>点击下方按钮授权</strong>
-        <p>将跳转到 Google 登录页面，用 cuibingyan7@gmail.com 登录并授权</p>
-      </div>
+    <h2>第1步：创建 Google 服务</h2>
+    <a class="btn btn-green" href="https://analytics.google.com" target="_blank">打开 GA4 (analytics.google.com)</a>
+    <a class="btn btn-blue" href="https://tagmanager.google.com" target="_blank">打开 GTM (tagmanager.google.com)</a>
+    <a class="btn btn-purple" href="https://adsense.google.com" target="_blank">打开 AdSense (adsense.google.com)</a>
+    <a class="btn btn-orange" href="https://search.google.com/search-console" target="_blank">打开 Search Console</a>
+  </div>
+
+  <div class="card">
+    <h2>第2步：粘贴 ID</h2>
+    <div class="input-group">
+      <label>GA4 测量 ID（格式: <code>G-XXXXXXXXXX</code>）</label>
+      <input type="text" id="ga4" placeholder="G-" oninput="checkAll()">
     </div>
-    <div class="step-row">
-      <div class="step-num">2</div>
-      <div class="step-info">
-        <strong>授权后自动创建</strong>
-        <p>系统会自动创建 GA4 属性、GTM 容器、检查 AdSense 状态</p>
-      </div>
+    <div class="input-group">
+      <label>GTM 容器 ID（格式: <code>GTM-XXXXXXX</code>）</label>
+      <input type="text" id="gtm" placeholder="GTM-" oninput="checkAll()">
     </div>
-    <div class="step-row">
-      <div class="step-num">3</div>
-      <div class="step-info">
-        <strong>自动更新网站代码</strong>
-        <p>获取到 ID 后自动替换所有页面中的占位符，推送到 GitHub 并部署</p>
-      </div>
+    <div class="input-group">
+      <label>AdSense 发布商 ID（格式: <code>ca-pub-XXXXXXXXXXXX</code>）</label>
+      <input type="text" id="adsense" placeholder="ca-pub-" oninput="checkAll()">
     </div>
   </div>
 
   <div class="card">
-    <div id="statusBox" class="status-box"></div>
-    
-    <button class="btn btn-primary" id="authBtn" onclick="startAuth()">
-      开始授权并自动设置
+    <h2>第3步：部署</h2>
+    <button class="btn btn-green" id="deployBtn" onclick="goDeploy()" disabled>
+      跳转到 GitHub 部署
     </button>
-
-    <div id="resultSection" style="display:none; margin-top:20px;">
-      <h2 style="margin-bottom:12px;">创建结果</h2>
-      <div class="result-grid">
-        <div class="result-item">
-          <div class="r-label">GA4 测量 ID</div>
-          <div class="r-value" id="ga4Result">---</div>
-        </div>
-        <div class="result-item">
-          <div class="r-label">GTM 容器 ID</div>
-          <div class="r-value" id="gtmResult">---</div>
-        </div>
-        <div class="result-item">
-          <div class="r-label">AdSense 发布商 ID</div>
-          <div class="r-value" id="adsenseResult">---</div>
-        </div>
-        <div class="result-item">
-          <div class="r-label">状态</div>
-          <div class="r-value" id="deployResult">---</div>
-        </div>
-      </div>
-    </div>
+    <p style="font-size:12px;color:#6B7280;text-align:center;margin-top:8px;">
+      点击后在新页面中点击 "Run workflow" 选择 "仅更新代码" 填入ID
+    </p>
   </div>
 
-  <div class="card" style="text-align:center; font-size:13px; color:#6B7280;">
-    需要帮助？查看 <a href="/deploy-guide" style="color:#667eea;">完整指南</a> | <a href="/dashboard" style="color:#667eea;">运营面板</a>
+  <div class="card" style="text-align:center;">
+    <p style="font-size:13px;color:#6B7280;">
+      搞不定？把 ID 直接发给 AI 助手，30秒完成
+    </p>
   </div>
 </div>
 
 <script>
-// Google OAuth 2.0 configuration
-// Using the Google OAuth 2.0 endpoint for installed apps
-const CLIENT_ID = '32555940559.apps.googleusercontent.com';
-const CLIENT_SECRET = 'ZmssLNjJy2998hD4CTg2ejr2';
-
-// We'll use the OAuth 2.0 for Web Server flow with redirect_uri=oob
-// This returns the auth code in the page title
-const OAUTH_URL = 'https://accounts.google.com/o/oauth2/auth?' + [
-  'client_id=' + CLIENT_ID,
-  'redirect_uri=urn:ietf:wg:oauth:2.0:oob',
-  'response_type=code',
-  'scope=' + encodeURIComponent([
-    'https://www.googleapis.com/auth/analytics.edit',
-    'https://www.googleapis.com/auth/tagmanager.edit.containers',
-    'https://www.googleapis.com/auth/adsense',
-    'openid',
-    'email',
-    'profile'
-  ].join(' ')),
-  'access_type=offline',
-  'prompt=consent'
-].join('&');
-
-function showStatus(msg, type) {
-  var box = document.getElementById('statusBox');
-  box.textContent = msg;
-  box.className = 'status-box show ' + type;
+function checkAll() {
+  var ga4 = document.getElementById('ga4').value.trim();
+  var gtm = document.getElementById('gtm').value.trim();
+  var has = (ga4 && ga4 !== 'G-') || (gtm && gtm !== 'GTM-');
+  document.getElementById('deployBtn').disabled = !has;
 }
-
-async function startAuth() {
-  var btn = document.getElementById('authBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>正在打开授权页面...';
-  
-  showStatus('正在打开 Google 授权页面...', 'info');
-  
-  // Open OAuth window
-  var authWindow = window.open(OAUTH_URL, 'googleAuth', 'width=600,height=700');
-  
-  if (!authWindow) {
-    showStatus('弹窗被阻止了！请允许弹窗后重试，或手动打开此链接授权', 'error');
-    btn.disabled = false;
-    btn.innerHTML = '开始授权并自动设置';
-    return;
-  }
-  
-  showStatus('请在弹窗中登录 Google 账号 (cuibingyan7@gmail.com) 并授权', 'info');
-  
-  // Wait for the auth window to redirect
-  var checkInterval = setInterval(async function() {
-    try {
-      var url = authWindow.location.href;
-      if (url.indexOf('approvalCode=') > -1 || url.indexOf('code=') > -1) {
-        clearInterval(checkInterval);
-        authWindow.close();
-        
-        // Extract the authorization code
-        var code = '';
-        var title = authWindow.document.title || '';
-        var match = title.match(/code=([^&]+)/) || url.match(/code=([^&]+)/) || url.match(/approvalCode=([^&]+)/);
-        if (match) {
-          code = match[1];
-        } else {
-          // Try to get from the page content
-          var body = authWindow.document.body.innerText || '';
-          var codeMatch = body.match(/[4][/][A-Za-z0-9_-]+/) || body.match(/code[=:]\s*([A-Za-z0-9_\/-]+)/);
-          if (codeMatch) code = codeMatch[1] || codeMatch[0];
-        }
-        
-        if (code) {
-          showStatus('授权成功！正在创建 Google 服务...', 'info');
-          btn.innerHTML = '<span class="spinner"></span>正在创建 Google 服务...';
-          await exchangeCodeAndSetup(code);
-        } else {
-          showStatus('无法获取授权码，请重试', 'error');
-          btn.disabled = false;
-          btn.innerHTML = '开始授权并自动设置';
-        }
-      }
-      // Check if auth window was closed
-      if (authWindow.closed) {
-        clearInterval(checkInterval);
-        showStatus('授权窗口已关闭，请重试', 'error');
-        btn.disabled = false;
-        btn.innerHTML = '开始授权并自动设置';
-      }
-    } catch(e) {
-      // Cross-origin, keep waiting
-    }
-  }, 1000);
-}
-
-async function exchangeCodeAndSetup(code) {
-  try {
-    // Exchange code for token
-    showStatus('正在交换授权码获取令牌...', 'info');
-    
-    var tokenResp = await fetch('https://oauth2.googleapis.com/token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        code: code,
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-        redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
-        grant_type: 'authorization_code'
-      })
-    });
-    
-    if (!tokenResp.ok) {
-      var errText = await tokenResp.text();
-      showStatus('令牌交换失败: ' + errText, 'error');
-      document.getElementById('authBtn').disabled = false;
-      document.getElementById('authBtn').innerHTML = '开始授权并自动设置';
-      return;
-    }
-    
-    var tokenData = await tokenResp.json();
-    var token = tokenData.access_token;
-    var headers = { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' };
-    
-    showStatus('令牌获取成功！正在创建 GA4...', 'info');
-    
-    // Create GA4
-    var ga4Id = null;
-    var gtmId = null;
-    var adsenseId = null;
-    
-    try {
-      // Get or create account
-      var resp = await fetch('https://analyticsadmin.googleapis.com/v1beta/accounts', { headers });
-      var data = await resp.json();
-      var accounts = data.accounts || [];
-      
-      if (accounts.length === 0) {
-        resp = await fetch('https://analyticsadmin.googleapis.com/v1beta/accounts', {
-          method: 'POST', headers,
-          body: JSON.stringify({ displayName: 'Health Calculator', regionCode: 'CN' })
-        });
-        data = await resp.json();
-        accounts = [data];
-      }
-      
-      var accountId = accounts[0].name.split('/').pop();
-      showStatus('GA4 账号: ' + accountId + '，正在创建属性...', 'info');
-      
-      // Create property
-      resp = await fetch('https://analyticsadmin.googleapis.com/v1beta/properties', {
-        method: 'POST', headers,
-        body: JSON.stringify({
-          displayName: 'Health Calculator - Web',
-          parent: 'accounts/' + accountId,
-          industryCategory: 'HEALTH',
-          timeZone: 'Asia/Shanghai',
-          currencyCode: 'CNY'
-        })
-      });
-      data = await resp.json();
-      var propName = data.name;
-      var propId = propName.split('/').pop();
-      showStatus('GA4 属性: ' + propId + '，正在创建数据流...', 'info');
-      
-      // Create data stream
-      resp = await fetch('https://analyticsadmin.googleapis.com/v1beta/' + propName + '/dataStreams', {
-        method: 'POST', headers,
-        body: JSON.stringify({
-          displayName: 'Main Site',
-          type: 'WEB_DATA_STREAM',
-          webStreamData: { defaultUri: 'https://1-seven-lovat-14.vercel.app' }
-        })
-      });
-      data = await resp.json();
-      ga4Id = data.webStreamData?.measurementId || null;
-      showStatus('GA4 创建成功: ' + ga4Id, 'success');
-    } catch(e) {
-      showStatus('GA4 创建失败: ' + e.message, 'error');
-    }
-    
-    // Create GTM
-    showStatus('正在创建 GTM...', 'info');
-    try {
-      var resp = await fetch('https://tagmanager.googleapis.com/tagmanager/v2/accounts', { headers });
-      var data = await resp.json();
-      var accounts = data.account || [];
-      
-      if (accounts.length === 0) {
-        resp = await fetch('https://tagmanager.googleapis.com/tagmanager/v2/accounts', {
-          method: 'POST', headers,
-          body: JSON.stringify({ name: 'Health Calculator' })
-        });
-        data = await resp.json();
-        accounts = [data];
-      }
-      
-      var gtmAccountId = accounts[0].accountId;
-      resp = await fetch('https://tagmanager.googleapis.com/tagmanager/v2/accounts/' + gtmAccountId + '/containers', {
-        method: 'POST', headers,
-        body: JSON.stringify({ name: 'Health Calculator Website', usageContext: ['web'] })
-      });
-      data = await resp.json();
-      gtmId = data.publicId || null;
-      showStatus('GTM 创建成功: ' + gtmId, 'success');
-    } catch(e) {
-      showStatus('GTM 创建失败: ' + e.message, 'error');
-    }
-    
-    // Check AdSense
-    showStatus('正在检查 AdSense...', 'info');
-    try {
-      var resp = await fetch('https://adsense.googleapis.com/v2/accounts', { headers });
-      var data = await resp.json();
-      var accounts = data.accounts || [];
-      if (accounts.length > 0) {
-        adsenseId = accounts[0].name.split('/').pop();
-        showStatus('AdSense 已关联: ' + adsenseId, 'success');
-      } else {
-        showStatus('AdSense 未找到，需要手动在 adsense.google.com 申请', 'info');
-      }
-    } catch(e) {
-      showStatus('AdSense 检查失败: ' + e.message, 'error');
-    }
-    
-    // Show results
-    document.getElementById('resultSection').style.display = 'block';
-    document.getElementById('ga4Result').textContent = ga4Id || '创建失败';
-    document.getElementById('gtmResult').textContent = gtmId || '创建失败';
-    document.getElementById('adsenseResult').textContent = adsenseId || '需手动申请';
-    
-    document.getElementById('authBtn').innerHTML = '触发自动部署';
-    document.getElementById('authBtn').disabled = false;
-    document.getElementById('authBtn').onclick = function() {
-      triggerDeploy(ga4Id, gtmId, adsenseId);
-    };
-    
-    showStatus('所有服务创建完成！点击下方按钮更新网站代码', 'success');
-    
-  } catch(e) {
-    showStatus('发生错误: ' + e.message, 'error');
-    document.getElementById('authBtn').disabled = false;
-    document.getElementById('authBtn').innerHTML = '重试';
-  }
-}
-
-function triggerDeploy(ga4Id, gtmId, adsenseId) {
-  var btn = document.getElementById('authBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>正在部署...';
-  
-  // Open GitHub Actions workflow with pre-filled inputs
-  var url = 'https://github.com/Cuibingyan-sys/1/actions/workflows/setup-google-services.yml';
-  window.open(url, '_blank');
-  
-  document.getElementById('deployResult').textContent = '已打开部署页面';
-  showStatus('已打开 GitHub Actions 页面，请点击 "Run workflow"，选择 "仅更新代码 (已有ID)"，填入以下 ID 后运行', 'info');
-  
-  btn.innerHTML = '已打开部署页面';
+function goDeploy() {
+  window.open('https://github.com/Cuibingyan-sys/1/actions/workflows/setup-google-services.yml', '_blank');
 }
 </script>
 </body>

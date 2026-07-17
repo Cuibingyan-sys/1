@@ -42,7 +42,7 @@ if ga4_prop and ga4_token:
         headers = {"Authorization": f"Bearer {ga4_token}", "Content-Type": "application/json"}
         resp = requests.post(
             f"https://analyticsdata.googleapis.com/v1beta/properties/{ga4_prop}:runReport",
-            headers=,
+            headers=headers,
             json={
                 "dateRanges": [{"startDate": yesterday, "endDate": yesterday}],
                 "metrics": [

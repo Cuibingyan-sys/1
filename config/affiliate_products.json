@@ -1,21 +1,59 @@
 {
-  "amazon_tag": "healthtools-23",
-  "_instructions": "在亚马逊联盟后台获取真实ASIN，替换下面的占位符",
+  "jd_affiliate": {
+    "_instructions": "在京东联盟(union.jd.com)注册后，将联盟ID填入url_template中替换PLACEHOLDER",
+    "union_id": "PLACEHOLDER",
+    "website": "https://1-seven-lovat-14.vercel.app"
+  },
   "products": {
     "smart_scale": {
-      "asin": "B0XXXXXX",
       "name": "智能体脂秤",
-      "url_template": "https://www.amazon.cn/dp/{ASIN}?tag={TAG}"
+      "jd_search_url": "https://search.jd.com/Search?keyword=%E6%99%BA%E8%83%BD%E4%BD%93%E8%84%82%E7%A7%A4&enc=utf-8",
+      "brands": [
+        "华为",
+        "小米",
+        "Keep",
+        "香山"
+      ]
     },
     "fitness_band": {
-      "asin": "B0XXXXXX",
       "name": "智能运动手环",
-      "url_template": "https://www.amazon.cn/dp/{ASIN}?tag={TAG}"
+      "jd_search_url": "https://search.jd.com/Search?keyword=%E6%99%BA%E8%83%BD%E8%BF%90%E5%8A%A8%E6%89%8B%E7%8E%AF&enc=utf-8",
+      "brands": [
+        "华为",
+        "小米",
+        "荣耀",
+        "OPPO"
+      ]
     },
     "protein_powder": {
-      "asin": "B0XXXXXX",
       "name": "乳清蛋白粉",
-      "url_template": "https://www.amazon.cn/dp/{ASIN}?tag={TAG}"
+      "jd_search_url": "https://search.jd.com/Search?keyword=%E4%B9%B3%E6%B8%85%E8%9B%8B%E7%99%BD%E7%B2%89&enc=utf-8",
+      "brands": [
+        "ON奥普帝蒙",
+        "Myprotein",
+        "汤臣倍健",
+        "Swisse"
+      ]
+    },
+    "yoga_mat": {
+      "name": "瑜伽垫",
+      "jd_search_url": "https://search.jd.com/Search?keyword=%E7%91%9C%E4%BC%BD%E5%9E%AB&enc=utf-8",
+      "brands": [
+        "Keep",
+        "李宁",
+        "迪卡侬",
+        "哈他"
+      ]
+    },
+    "kitchen_scale": {
+      "name": "厨房食物秤",
+      "jd_search_url": "https://search.jd.com/Search?keyword=%E5%8E%A8%E6%88%BF%E7%94%B5%E5%AD%90%E7%A7%A4&enc=utf-8",
+      "brands": [
+        "香山",
+        "小米",
+        "拜杰",
+        "美乐"
+      ]
     }
   }
 }

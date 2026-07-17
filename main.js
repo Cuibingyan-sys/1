@@ -66,3 +66,9 @@ function trackAdClick(adName) {
     });
   }
 }
+function switchDonate(type) {
+  document.querySelectorAll('.donate-qr').forEach(el => el.classList.remove('show'));
+  document.querySelectorAll('.donate-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('donate-' + type).classList.add('show');
+  event.target.classList.add('active');
+}

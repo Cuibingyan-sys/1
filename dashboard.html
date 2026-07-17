@@ -561,6 +561,7 @@
 
 <script>
   const SITE_URL = 'https://1-seven-lovat-14.vercel.app';
+  const DATA_URL = 'https://1-seven-lovat-14.vercel.app/dashboard-data.json';
 
   function showToast(msg) {
     var t = document.getElementById('toast');
@@ -588,19 +589,60 @@
     }
   }
 
+  async function loadDashboardData() {
+    try {
+      var resp = await fetch(DATA_URL, { signal: AbortSignal.timeout(5000) });
+      if (!resp.ok) return;
+      var data = await resp.json();
+      
+      // 更新流量指标
+      if (data.traffic) {
+        var m = document.querySelectorAll('.traffic-metrics .m-value');
+        if (m[0]) m[0].textContent = data.traffic.visitors || '--';
+        if (m[1]) m[1].textContent = data.traffic.pageviews || '--';
+        if (data.traffic.note) {
+          var ph = document.querySelector('.traffic-card .ph-text');
+          if (ph) ph.textContent = data.traffic.note;
+        }
+      }
+      
+      // 更新状态卡片
+      if (data.status) {
+        var ga4Card = document.querySelectorAll('.status-card')[2];
+        var adsCard = document.querySelectorAll('.status-card')[3];
+        if (ga4Card && data.status.ga4_configured) {
+          ga4Card.querySelector('.value').innerHTML = '<span class="status-dot dot-online"></span><span class="text-online">已配置</span>';
+        }
+        if (adsCard && data.status.adsense_configured) {
+          adsCard.querySelector('.value').innerHTML = '<span class="status-dot dot-online"></span><span class="text-online">已配置</span>';
+        }
+      }
+      
+      // 更新更新时间
+      if (data.updated) {
+        var footer = document.querySelector('.footer');
+        if (footer) footer.textContent = 'BMI 计算器运营控制面板 — 数据更新于 ' + new Date(data.updated).toLocaleString('zh-CN');
+      }
+    } catch (e) {
+      console.log('Dashboard data not available yet');
+    }
+  }
+
   async function refreshStatus() {
     var btn = document.getElementById('refreshBtn');
     btn.classList.add('refreshing');
     btn.disabled = true;
     await checkSiteStatus();
+    await loadDashboardData();
     showToast('状态已刷新');
     btn.classList.remove('refreshing');
     btn.disabled = false;
   }
 
-  // 页面加载时自动检测一次
+  // 页面加载时自动检测
   window.addEventListener('DOMContentLoaded', function() {
     checkSiteStatus();
+    loadDashboardData();
   });
 </script>
 

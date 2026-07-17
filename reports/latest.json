@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-17T09:00:18.817499+08:00",
+  "generated_at": "2026-07-17T10:25:34.471417+08:00",
   "date": "2026-07-17",
   "website": "https://1-seven-lovat-14.vercel.app",
   "traffic": {
@@ -17,8 +17,8 @@
   },
   "status": {
     "site_online": true,
-    "ga4_configured": false,
+    "ga4_configured": true,
     "adsense_configured": false,
-    "gtm_configured": false
+    "gtm_configured": true
   }
 }

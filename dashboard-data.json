@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-17T09:00:18.817499+08:00",
+  "updated": "2026-07-17T10:25:34.471417+08:00",
   "traffic": {
     "visitors": "N/A",
     "pageviews": "N/A",
@@ -15,8 +15,8 @@
   },
   "status": {
     "site_online": true,
-    "ga4_configured": false,
+    "ga4_configured": true,
     "adsense_configured": false,
-    "gtm_configured": false
+    "gtm_configured": true
   }
 }

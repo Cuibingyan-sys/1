@@ -1,7 +1,7 @@
-# 每日流量收益报告 - GitHub Actions
-# 每天北京时间 09:00 自动运行
+# 每日流量收益报告 + 飞书通知 - GitHub Actions
+# 每天北京时间 09:00 自动运行，也可以通过 workflow_dispatch 手动触发
 
-name: Daily Revenue Report
+name: Daily Report & Feishu Notification
 
 on:
   schedule:
@@ -30,6 +30,13 @@ jobs:
         run: |
           git config user.name "Daily Report Bot"
           git config user.email "bot@healthcalc.com"
-          git add reports/
+          git add reports/ dashboard-data.json
           git diff --staged --quiet || git commit -m "📊 每日报告 $(date +%Y-%m-%d)"
           git push
+
+      - name: Send Feishu Notification
+        env:
+          FEISHU_APP_ID: ${{ secrets.FEISHU_APP_ID }}
+          FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
+          FEISHU_CHAT_ID: ${{ secrets.FEISHU_CHAT_ID }}
+        run: python3 scripts/send_feishu_report.py

@@ -286,6 +286,225 @@ def handle_config():
 💡 设置API Key: 在飞书发送 `/apikey sk-xxx`"""
 
 # ══════════════════════════════════════════
+# 数据加载辅助函数
+# ══════════════════════════════════════════
+
+def load_json_file(filepath):
+    """加载 JSON 文件，文件不存在或解析失败返回 None"""
+    try:
+        with open(filepath, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+def fmt_val(val):
+    """格式化数值：N/A显示等待提示，0显示0，数字显示千分位"""
+    if val is None or val == "N/A" or val == "等待数据":
+        return "⏳ 等待数据中（GA4/AdSense 数据延迟24-48小时）"
+    if isinstance(val, (int, float)):
+        if val == 0:
+            return "0"
+        return f"{val:,.0f}"
+    return str(val)
+
+def fmt_num(val):
+    """纯数字格式化，不做 N/A 判断（用于子字段已在上一级处理过的场景）"""
+    if isinstance(val, (int, float)):
+        if val == 0:
+            return "0"
+        return f"{val:,.0f}"
+    if val is None or val == "N/A" or val == "等待数据":
+        return "⏳ 等待数据中（GA4/AdSense 数据延迟24-48小时）"
+    return str(val)
+
+def load_dashboard_data():
+    """加载 dashboard-data.json 和 reports/latest.json，返回合并后的数据"""
+    dashboard = load_json_file(f"{WORKSPACE}/dashboard-data.json") or {}
+    report = load_json_file(f"{WORKSPACE}/reports/latest.json") or {}
+    return dashboard, report
+
+# ══════════════════════════════════════════
+# /traffic — 流量查询
+# ══════════════════════════════════════════
+
+def handle_traffic():
+    """返回今日/累计流量数据"""
+    dashboard, report = load_dashboard_data()
+
+    # 优先从 dashboard-data.json 获取，其次从 reports/latest.json
+    traffic = dashboard.get("traffic", {}) or report.get("traffic", {})
+    today = traffic.get("today", {}) or {}
+    total = traffic.get("total", {}) or {}
+    sources = traffic.get("sources", {}) or {}
+
+    msg = "📊 **流量数据**\n\n"
+    msg += "---\n"
+
+    # 今日流量
+    msg += "### 🟢 今日流量\n"
+    msg += f"• 访客数：{fmt_val(today.get('visitors'))}\n"
+    msg += f"• 页面浏览：{fmt_val(today.get('pageviews'))}\n"
+    msg += f"• 会话数：{fmt_val(today.get('sessions'))}\n"
+    if today.get("bounce_rate") is not None:
+        msg += f"• 跳出率：{fmt_val(today.get('bounce_rate'))}\n"
+    if today.get("avg_duration") is not None:
+        msg += f"• 平均时长：{fmt_val(today.get('avg_duration'))}\n"
+    msg += "\n"
+
+    # 累计流量
+    msg += "### 🔵 累计流量\n"
+    msg += f"• 访客数：{fmt_val(total.get('visitors'))}\n"
+    msg += f"• 页面浏览：{fmt_val(total.get('pageviews'))}\n"
+    msg += f"• 会话数：{fmt_val(total.get('sessions'))}\n"
+    msg += "\n"
+
+    # 流量来源
+    if sources:
+        msg += "### 📍 流量来源\n"
+        for src in ["direct", "organic", "referral", "social"]:
+            if src in sources:
+                emoji = {"direct": "🔗", "organic": "🔍", "referral": "🔗", "social": "📱"}.get(src, "•")
+                label = {"direct": "直接访问", "organic": "自然搜索", "referral": "引荐流量", "social": "社交媒体"}.get(src, src)
+                msg += f"• {emoji} {label}：{fmt_val(sources[src])}\n"
+        msg += "\n"
+
+    msg += "---\n"
+    msg += f"💡 更新时间：{dashboard.get('updated_at', report.get('date', '--'))}\n"
+    msg += f"🔗 [打开仪表盘]({DASHBOARD_URL})"
+
+    return msg
+
+# ══════════════════════════════════════════
+# /revenue — 收益查询
+# ══════════════════════════════════════════
+
+def handle_revenue():
+    """返回今日/累计收益数据"""
+    dashboard, report = load_dashboard_data()
+
+    revenue = dashboard.get("revenue", {}) or report.get("revenue", {})
+    today = revenue.get("today", {}) or {}
+    total = revenue.get("total", {}) or {}
+
+    msg = "💰 **收益数据**\n\n"
+    msg += "---\n"
+
+    # 今日收益
+    msg += "### 🟢 今日收益\n"
+    msg += f"• 📢 AdSense 预估：{fmt_val(today.get('adsense'))}\n"
+    msg += f"• 🛒 京东联盟：{fmt_val(today.get('jd'))}\n"
+    msg += f"• ☕ 打赏收入：{fmt_val(today.get('tips'))}\n"
+    msg += "\n"
+
+    # 累计收益
+    msg += "### 🔵 累计收益\n"
+    msg += f"• 📢 AdSense 预估：{fmt_val(total.get('adsense'))}\n"
+    msg += f"• 🛒 京东联盟：{fmt_val(total.get('jd'))}\n"
+    msg += f"• ☕ 打赏收入：{fmt_val(total.get('tips'))}\n"
+    msg += "\n"
+
+    # 收益汇总
+    today_total = None
+    if today.get("adsense") and today.get("jd") and today.get("tips"):
+        try:
+            t_vals = []
+            for k in ["adsense", "jd", "tips"]:
+                v = today[k]
+                if isinstance(v, (int, float)):
+                    t_vals.append(v)
+            if t_vals:
+                today_total = sum(t_vals)
+        except Exception:
+            pass
+
+    if today_total is not None:
+        msg += f"📊 **今日合计**：{fmt_num(today_total)}\n"
+
+    msg += "---\n"
+    msg += f"💡 更新时间：{dashboard.get('updated_at', report.get('date', '--'))}\n"
+    msg += f"🔗 [打开仪表盘]({DASHBOARD_URL})"
+
+    return msg
+
+# ══════════════════════════════════════════
+# /dashboard — 完整仪表盘
+# ══════════════════════════════════════════
+
+def handle_dashboard():
+    """返回完整仪表盘数据（流量+收益+服务状态）"""
+    dashboard, report = load_dashboard_data()
+
+    traffic = dashboard.get("traffic", {}) or report.get("traffic", {})
+    revenue = dashboard.get("revenue", {}) or report.get("revenue", {})
+    services = dashboard.get("services", {}) or {}
+
+    t_today = traffic.get("today", {}) or {}
+    t_total = traffic.get("total", {}) or {}
+    r_today = revenue.get("today", {}) or {}
+    r_total = revenue.get("total", {}) or {}
+
+    msg = "📈 **AI数字工厂 · 仪表盘**\n\n"
+    msg += "---\n"
+
+    # 流量概览
+    msg += "### 📊 流量概览\n"
+    msg += "| 指标 | 今日 | 累计 |\n"
+    msg += "|------|------|------|\n"
+    msg += f"| 👤 访客 | {fmt_val(t_today.get('visitors'))} | {fmt_val(t_total.get('visitors'))} |\n"
+    msg += f"| 👁 页面浏览 | {fmt_val(t_today.get('pageviews'))} | {fmt_val(t_total.get('pageviews'))} |\n"
+    msg += f"| 📋 会话 | {fmt_val(t_today.get('sessions'))} | {fmt_val(t_total.get('sessions'))} |\n"
+    msg += "\n"
+
+    # 收益概览
+    msg += "### 💰 收益概览\n"
+    msg += "| 来源 | 今日 | 累计 |\n"
+    msg += "|------|------|------|\n"
+    msg += f"| 📢 AdSense | {fmt_val(r_today.get('adsense'))} | {fmt_val(r_total.get('adsense'))} |\n"
+    msg += f"| 🛒 京东联盟 | {fmt_val(r_today.get('jd'))} | {fmt_val(r_total.get('jd'))} |\n"
+    msg += f"| ☕ 打赏 | {fmt_val(r_today.get('tips'))} | {fmt_val(r_total.get('tips'))} |\n"
+    msg += "\n"
+
+    # 流量来源
+    sources = traffic.get("sources", {})
+    if sources:
+        msg += "### 📍 流量来源\n"
+        for src in ["direct", "organic", "referral", "social"]:
+            if src in sources:
+                emoji = {"direct": "🔗", "organic": "🔍", "referral": "🔗", "social": "📱"}.get(src, "•")
+                label = {"direct": "直接访问", "organic": "自然搜索", "referral": "引荐流量", "social": "社交媒体"}.get(src, src)
+                msg += f"• {emoji} {label}：{fmt_val(sources[src])}\n"
+        msg += "\n"
+
+    # 服务状态
+    if services:
+        msg += "### 🟢 服务状态\n"
+        svc_list = [
+            ("ga4", "📊", "GA4 分析"),
+            ("adsense", "💰", "Google AdSense"),
+            ("baidu_tongji", "📈", "百度统计"),
+            ("gtm", "🏷", "Google Tag Manager"),
+            ("jd_alliance", "🛒", "京东联盟"),
+        ]
+        for key, emoji, label in svc_list:
+            if key in services:
+                status = services[key]
+                if status in ("active", "ok", "connected", "正常"):
+                    msg += f"• {emoji} {label}：✅ 正常\n"
+                elif status in ("pending", "waiting", "等待"):
+                    msg += f"• {emoji} {label}：⏳ 等待数据\n"
+                elif status in ("error", "failed", "异常"):
+                    msg += f"• {emoji} {label}：❌ 异常\n"
+                else:
+                    msg += f"• {emoji} {label}：{status}\n"
+        msg += "\n"
+
+    msg += "---\n"
+    msg += f"💡 更新时间：{dashboard.get('updated_at', report.get('date', '--'))}\n"
+    msg += f"🔗 [打开仪表盘]({DASHBOARD_URL})"
+
+    return msg
+
+# ══════════════════════════════════════════
 # 命令处理
 # ══════════════════════════════════════════
 
@@ -325,11 +544,26 @@ def handle_command(content, chat_id):
         send_message(chat_id, "⏳ 正在生成报告...")
         return True, handle_report()
     
+    if c == "/traffic":
+        return True, handle_traffic()
+    
+    if c == "/revenue":
+        return True, handle_revenue()
+    
+    if c == "/dashboard":
+        return True, handle_dashboard()
+    
     if c == "/config":
         return True, handle_config()
     
     if c == "/help":
         return True, f"""🤖 **AI数字工厂 v4.0 命令列表**
+
+**网站数据**
+• `/traffic` — 查看今日/累计流量
+• `/revenue` — 查看今日/累计收益
+• `/dashboard` — 完整仪表盘（流量+收益+服务状态）
+• `/report` — 生成并发送流量报告
 
 **文件操作**
 • `/read 文件名` — 读取文件
@@ -337,11 +571,8 @@ def handle_command(content, chat_id):
 • `/list` — 列出文件
 • `/search 关键词` — 搜索文件内容
 
-**网站管理**
-• `/report` — 生成流量报告
-• `/config` — 查看配置
-
 **设置**
+• `/config` — 查看配置
 • `/apikey sk-xxx` — 设置 DeepSeek API Key
 
 **其他**

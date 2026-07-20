@@ -770,7 +770,7 @@ def main():
     proc = subprocess.Popen(
         ["lark-cli", "event", "consume", "im.message.receive_v1",
          "--as", "bot", "--jq", jq_filter],
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
         text=True, bufsize=1, env=ENV
     )
     
@@ -778,15 +778,17 @@ def main():
     ready = False
     deadline = time.time() + 60
     while time.time() < deadline:
-        readable, _, _ = select.select([proc.stderr], [], [], 1.0)
-        if readable:
-            line = proc.stderr.readline()
+        readable, _, _ = select.select([proc.stdout, proc.stderr], [], [], 1.0)
+        for fd in readable:
+            line = fd.readline()
             if not line:
                 break
             if "[event] ready" in line:
                 ready = True
                 break
-            if "{" in line:
+            if "[event] exited" in line or "[event] stdin closed" in line:
+                print(f"⚠️ {line.strip()}", flush=True)
+            if "{" in line and fd == proc.stderr:
                 try:
                     err = json.loads(line.strip())
                     if not err.get("ok", True):
@@ -795,6 +797,8 @@ def main():
                         return
                 except:
                     pass
+        if ready:
+            break
     
     if not ready:
         print("❌ 启动失败")

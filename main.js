@@ -83,28 +83,25 @@ function trackAdClick(adName) {
 })();
 
 // ============================================
-//   Adsterra Smart Direct Link - Pop-under
+//   Adsterra Direct Link - 底部浮层广告
 // ============================================
 (function() {
-  var adsterraUrl = 'https://www.effectivecpmnetwork.com/f0qb315fz?key=10d1d7465a1f8bb980cadc99b4a64ed7';
-  var fired = false;
-  var popunder = function() {
-    if (fired) return;
-    fired = true;
-    try {
-      var w = window.open(adsterraUrl, '_blank', 'width=800,height=600,scrollbars=yes');
-      if (w) {
-        w.blur();
-        window.focus();
-      }
-    } catch(e) {}
-  };
-  // 触发方式1：用户首次点击页面
-  document.addEventListener('click', popunder, { once: true });
-  // 触发方式2：10秒后自动触发（兜底）
+  var adUrl = 'https://www.effectivecpmnetwork.com/f0qb315fz?key=10d1d7465a1f8bb980cadc99b4a64ed7';
+  var bar = document.createElement('div');
+  bar.id = 'adsterra-bar';
+  bar.style.cssText = 'position:fixed;bottom:0;left:0;width:100%;z-index:9997;background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:10px 16px;display:none;align-items:center;justify-content:center;gap:12px;font-size:0.9rem;font-family:inherit;box-shadow:0 -2px 12px rgba(0,0,0,0.2);';
+  bar.innerHTML = '<span style="font-weight:600;">🔥 发现更多精彩内容</span>' +
+    '<a href="' + adUrl + '" target="_blank" rel="nofollow" style="background:#ff6b35;color:#fff;padding:8px 20px;border-radius:20px;font-weight:700;text-decoration:none;white-space:nowrap;font-size:0.85rem;transition:transform 0.2s;" onmouseover="this.style.transform=\'scale(1.05)\'" onmouseout="this.style.transform=\'scale(1)\'">立即查看</a>' +
+    '<button onclick="document.getElementById(\'adsterra-bar\').style.display=\'none\';localStorage.setItem(\'ab_closed\',Date.now());" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:20px;cursor:pointer;padding:0 4px;line-height:1;" title="关闭">&times;</button>';
+  document.body.appendChild(bar);
+
+  // 5秒后显示，24小时内关闭过不重复
   setTimeout(function() {
-    if (!fired) popunder();
-  }, 10000);
+    var lastClosed = localStorage.getItem('ab_closed');
+    if (!lastClosed || (Date.now() - parseInt(lastClosed)) > 86400000) {
+      bar.style.display = 'flex';
+    }
+  }, 5000);
 })();
 
 // ============================================

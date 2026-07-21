@@ -2,16 +2,33 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="免费在线BMI计算器、体脂率、卡路里、BMR、理想体重计算器，5秒了解你的健康数据，科学减肥必备工具">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="免费在线BMI计算器、体脂率、卡路里、BMR、理想体重计算器，5秒了解你的健康数据，科学减肥必备工具。无需下载，打开即用！">
   <meta name="keywords" content="BMI计算器,体脂率计算器,卡路里计算器,BMR计算器,理想体重计算器,免费在线计算器,健康管理,减肥工具">
-  <meta property="og:title" content="免费在线BMI计算器 - 5秒知道你的健康数据">
-  <meta property="og:description" content="5个免费计算器，科学减肥必备！BMI、体脂率、卡路里、BMR、理想体重一键计算。">
+  <title>免费在线健康计算器 - BMI、体脂率、卡路里、BMR、理想体重 | 科学减肥必备</title>
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:title" content="免费在线健康计算器 - BMI、体脂率、卡路里、BMR、理想体重 | 科学减肥必备">
+  <meta property="og:description" content="5个免费在线健康计算器，5秒测出你的健康数据！BMI、体脂率、卡路里、BMR、理想体重，科学减肥必备工具，无需下载，打开即用！">
   <meta property="og:url" content="https://1-seven-lovat-14.vercel.app">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://1-seven-lovat-14.vercel.app/assets/share-cover.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:site_name" content="免费在线健康计算器">
-  <title>免费在线BMI计算器 - 5秒知道你的健康数据</title>
+  <meta property="og:locale" content="zh_CN">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="免费在线健康计算器 - BMI、体脂率、卡路里、BMR、理想体重 | 科学减肥必备">
+  <meta name="twitter:description" content="5个免费在线健康计算器，5秒测出你的健康数据！BMI、体脂率、卡路里、BMR、理想体重，科学减肥必备工具，无需下载，打开即用！">
+  <meta name="twitter:image" content="https://1-seven-lovat-14.vercel.app/assets/share-cover.png">
+
+  <!-- WeChat -->
+  <meta itemprop="name" content="免费在线健康计算器 - BMI、体脂率、卡路里、BMR、理想体重 | 科学减肥必备">
+  <meta itemprop="description" content="5个免费在线健康计算器，科学减肥必备！BMI、体脂率、卡路里、BMR、理想体重，无需下载，打开即用！">
+  <meta itemprop="image" content="https://1-seven-lovat-14.vercel.app/assets/share-cover.png">
+
   <style>
     * {
       margin: 0;
@@ -22,6 +39,7 @@
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-attachment: fixed;
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -38,6 +56,7 @@
       overflow: hidden;
     }
 
+    /* ===== 头部 ===== */
     .header {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       padding: 40px 30px 30px;
@@ -49,6 +68,12 @@
       font-size: 56px;
       margin-bottom: 12px;
       display: block;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
     }
 
     .header h1 {
@@ -63,8 +88,10 @@
       font-size: 14px;
       opacity: 0.9;
       font-weight: 400;
+      letter-spacing: 0.5px;
     }
 
+    /* ===== 内容区 ===== */
     .content {
       padding: 30px 24px;
     }
@@ -102,9 +129,16 @@
       transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    .feature-list li:hover {
+    .feature-list li:active {
       transform: translateX(4px);
       box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    }
+
+    @media (hover: hover) {
+      .feature-list li:hover {
+        transform: translateX(4px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+      }
     }
 
     .feature-list .check {
@@ -122,6 +156,7 @@
       font-weight: bold;
     }
 
+    /* ===== CTA按钮 ===== */
     .cta-button {
       display: block;
       width: 100%;
@@ -140,13 +175,16 @@
       margin-bottom: 16px;
     }
 
-    .cta-button:hover {
+    .cta-button:active {
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
     }
 
-    .cta-button:active {
-      transform: translateY(0);
+    @media (hover: hover) {
+      .cta-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+      }
     }
 
     .secondary-button {
@@ -166,18 +204,37 @@
       margin-bottom: 24px;
     }
 
-    .secondary-button:hover {
+    .secondary-button:active {
       background: #667eea;
       color: #fff;
     }
 
+    @media (hover: hover) {
+      .secondary-button:hover {
+        background: #667eea;
+        color: #fff;
+      }
+    }
+
+    /* ===== 二维码区域 ===== */
     .qr-section {
       text-align: center;
       padding: 20px;
-      margin-bottom: 20px;
+      margin-bottom: 8px;
       background: #fafafa;
       border-radius: 12px;
       border: 2px dashed #e0e0e0;
+    }
+
+    .qr-section .qr-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
 
     .qr-placeholder {
@@ -185,10 +242,11 @@
       width: 160px;
       height: 160px;
       margin: 0 auto 12px;
-      background: #eee;
+      background: #f0f0f0;
       border-radius: 8px;
       position: relative;
       overflow: hidden;
+      border: 3px solid #e8e8e8;
     }
 
     .qr-placeholder::before {
@@ -211,15 +269,16 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 48px;
-      height: 48px;
+      width: 52px;
+      height: 52px;
       background: #fff;
-      border-radius: 8px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 28px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      z-index: 1;
     }
 
     .qr-section .qr-text {
@@ -229,16 +288,183 @@
       line-height: 1.6;
     }
 
-    .share-section {
-      margin-top: 8px;
+    .qr-section .qr-text strong {
+      color: #555;
     }
 
-    .share-section h3 {
+    /* ===== 分享按钮区域 ===== */
+    .share-buttons-section {
+      margin-bottom: 24px;
+    }
+
+    .share-buttons-section h3 {
       font-size: 16px;
       color: #333;
       margin-bottom: 14px;
       text-align: center;
       font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .share-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .share-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      transition: transform 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
+    }
+
+    .share-btn:active {
+      transform: scale(0.92);
+    }
+
+    .share-btn .btn-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: box-shadow 0.2s;
+    }
+
+    .share-btn .btn-label {
+      font-size: 12px;
+      color: #666;
+      font-weight: 500;
+    }
+
+    .share-btn.wechat .btn-icon {
+      background: linear-gradient(135deg, #07C160, #06AD56);
+    }
+
+    .share-btn.qq .btn-icon {
+      background: linear-gradient(135deg, #12B7F5, #0D9FE0);
+    }
+
+    .share-btn.weibo .btn-icon {
+      background: linear-gradient(135deg, #E6162D, #C8102E);
+    }
+
+    .share-btn.copy-link .btn-icon {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+
+    /* 微信引导遮罩 */
+    .wechat-guide-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 10000;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .wechat-guide-overlay.active {
+      display: flex;
+    }
+
+    .wechat-guide-content {
+      text-align: right;
+      padding: 20px 20px;
+      width: 100%;
+    }
+
+    .wechat-guide-arrow {
+      font-size: 48px;
+      color: #fff;
+      display: block;
+      margin-bottom: 8px;
+      animation: bounce 1.5s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .wechat-guide-text {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.6;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .wechat-guide-close {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 30px;
+      background: rgba(255,255,255,0.2);
+      border: 2px solid rgba(255,255,255,0.6);
+      color: #fff;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Toast 提示 */
+    .toast {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      z-index: 9999;
+      opacity: 0;
+      transition: all 0.3s ease;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* ===== 分享文案卡片 ===== */
+    .share-text-section {
+      margin-top: 8px;
+    }
+
+    .share-text-section h3 {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 14px;
+      text-align: center;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
 
     .share-card {
@@ -264,30 +490,40 @@
       color: #444;
       line-height: 1.6;
       word-break: break-all;
+      padding-right: 50px;
     }
 
     .share-card .copy-btn {
       position: absolute;
       top: 12px;
       right: 14px;
-      padding: 4px 12px;
+      padding: 5px 14px;
       font-size: 12px;
       background: #667eea;
       color: #fff;
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      transition: opacity 0.2s;
+      transition: opacity 0.2s, background 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
     }
 
-    .share-card .copy-btn:hover {
+    .share-card .copy-btn:active {
       opacity: 0.85;
+    }
+
+    @media (hover: hover) {
+      .share-card .copy-btn:hover {
+        opacity: 0.85;
+      }
     }
 
     .share-card .copy-btn.copied {
       background: #52c41a;
     }
 
+    /* ===== 底部 ===== */
     .footer {
       text-align: center;
       padding: 16px 24px;
@@ -300,15 +536,158 @@
       color: #667eea;
       text-decoration: none;
     }
+
+    /* ===== 微信顶部提示条 ===== */
+    .wechat-tip-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      padding: 12px 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #333;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: none;
+      line-height: 1.5;
+    }
+
+    .wechat-tip-bar.active {
+      display: block;
+    }
+
+    .wechat-tip-bar strong {
+      color: #07C160;
+    }
+
+    /* ===== 响应式优化 ===== */
+    @media screen and (max-width: 480px) {
+      body {
+        padding: 10px;
+        align-items: flex-start;
+        padding-top: 10px;
+      }
+
+      .container {
+        border-radius: 16px;
+      }
+
+      .header {
+        padding: 30px 20px 24px;
+      }
+
+      .header h1 {
+        font-size: 20px;
+      }
+
+      .header .icon {
+        font-size: 44px;
+      }
+
+      .content {
+        padding: 20px 16px;
+      }
+
+      .intro {
+        font-size: 14px;
+        padding: 12px 14px;
+        margin-bottom: 18px;
+      }
+
+      .feature-list li {
+        font-size: 14px;
+        padding: 10px 12px;
+      }
+
+      .cta-button {
+        font-size: 16px;
+        padding: 14px 16px;
+      }
+
+      .secondary-button {
+        font-size: 14px;
+        padding: 12px 16px;
+      }
+
+      .share-buttons {
+        gap: 12px;
+      }
+
+      .share-btn .btn-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 20px;
+      }
+
+      .share-btn .btn-label {
+        font-size: 11px;
+      }
+
+      .share-card .text {
+        font-size: 13px;
+        padding-right: 45px;
+      }
+
+      .qr-placeholder {
+        width: 140px;
+        height: 140px;
+      }
+
+      .wechat-tip-bar {
+        font-size: 13px;
+        padding: 10px 16px;
+      }
+    }
+
+    @media screen and (max-width: 360px) {
+      .header h1 {
+        font-size: 18px;
+      }
+
+      .header .subtitle {
+        font-size: 12px;
+      }
+
+      .share-buttons {
+        gap: 8px;
+      }
+
+      .share-btn .btn-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+      }
+    }
   </style>
 </head>
 <body>
 
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- 微信引导遮罩 -->
+  <div class="wechat-guide-overlay" id="wechatGuide">
+    <div class="wechat-guide-content">
+      <span class="wechat-guide-arrow">&#x2B07;&#xFE0F;</span>
+      <p class="wechat-guide-text">
+        请点击右上角<br><strong style="font-size:18px;">&#x2022;&#x2022;&#x2022;</strong><br>选择"分享给朋友"或"分享到朋友圈"
+      </p>
+      <button class="wechat-guide-close" onclick="closeWechatGuide()">我知道了</button>
+    </div>
+  </div>
+
+  <!-- 微信顶部提示条 -->
+  <div class="wechat-tip-bar" id="wechatTipBar">
+    &#x1F446; 点击右上角 <strong>&#x2022;&#x2022;&#x2022;</strong> 分享给朋友或朋友圈
+  </div>
+
   <div class="container">
     <div class="header">
       <span class="icon">&#x1F3E5;</span>
-      <h1>免费在线BMI计算器</h1>
-      <p class="subtitle">5秒知道你的健康数据</p>
+      <h1>免费在线健康计算器</h1>
+      <p class="subtitle">5秒了解你的健康数据 &middot; 科学减肥必备</p>
     </div>
 
     <div class="content">
@@ -348,19 +727,45 @@
         &#x1F6CD; 减肥好物推荐
       </a>
 
+      <!-- 二维码区域 -->
       <div class="qr-section">
+        <div class="qr-title">&#x1F4F1; 扫码访问网站</div>
         <div class="qr-placeholder">
           <div class="qr-center">&#x1F4F1;</div>
         </div>
         <p class="qr-text">
-          <strong>扫码访问</strong><br>
-          微信/QQ/浏览器扫码打开<br>
-          建议将二维码图片替换为实际生成的二维码
+          <strong>微信/QQ/浏览器扫码打开</strong><br>
+          二维码图片请替换为实际生成的二维码<br>
+          推荐使用草料二维码生成器生成
         </p>
       </div>
 
-      <div class="share-section">
-        <h3>&#x1F4E2; 分享文案（一键复制）</h3>
+      <!-- 一键分享按钮 -->
+      <div class="share-buttons-section">
+        <h3>&#x1F4E4; 一键分享</h3>
+        <div class="share-buttons">
+          <button class="share-btn wechat" onclick="shareToWechat()" title="分享到微信">
+            <span class="btn-icon">&#x1F4AC;</span>
+            <span class="btn-label">微信</span>
+          </button>
+          <button class="share-btn qq" onclick="shareToQQ()" title="分享到QQ">
+            <span class="btn-icon">&#x1F426;</span>
+            <span class="btn-label">QQ</span>
+          </button>
+          <button class="share-btn weibo" onclick="shareToWeibo()" title="分享到微博">
+            <span class="btn-icon">&#x1F4E2;</span>
+            <span class="btn-label">微博</span>
+          </button>
+          <button class="share-btn copy-link" onclick="copyPageLink()" title="复制链接">
+            <span class="btn-icon">&#x1F517;</span>
+            <span class="btn-label">复制链接</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 分享文案一键复制 -->
+      <div class="share-text-section">
+        <h3>&#x1F4DD; 分享文案（一键复制）</h3>
 
         <div class="share-card" id="share-wechat">
           <div class="platform">&#x1F4F1; 微信朋友圈</div>
@@ -389,12 +794,29 @@
   </div>
 
   <script>
+    var SITE_URL = 'https://1-seven-lovat-14.vercel.app';
+    var SITE_TITLE = '免费在线健康计算器 - BMI、体脂率、卡路里、BMR、理想体重 | 科学减肥必备';
+    var SITE_DESC = '5个免费在线健康计算器，5秒测出你的健康数据！BMI、体脂率、卡路里、BMR、理想体重，科学减肥必备工具，无需下载，打开即用！';
+
+    // ===== Toast 提示 =====
+    function showToast(msg) {
+      var toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(function() {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+
+    // ===== 复制文案 =====
     function copyText(elementId, btn) {
       var text = document.getElementById(elementId).innerText;
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(function() {
           btn.textContent = '已复制';
           btn.classList.add('copied');
+          showToast('复制成功！');
           setTimeout(function() {
             btn.textContent = '复制';
             btn.classList.remove('copied');
@@ -412,31 +834,125 @@
       textarea.value = text;
       textarea.style.position = 'fixed';
       textarea.style.left = '-9999px';
+      textarea.style.top = '-9999px';
       document.body.appendChild(textarea);
       textarea.select();
       try {
         document.execCommand('copy');
         btn.textContent = '已复制';
         btn.classList.add('copied');
+        showToast('复制成功！');
         setTimeout(function() {
           btn.textContent = '复制';
           btn.classList.remove('copied');
         }, 2000);
       } catch (e) {
-        btn.textContent = '失败';
+        showToast('复制失败，请手动复制');
       }
       document.body.removeChild(textarea);
     }
 
-    // 微信内打开直接提示右上角分享
-    var ua = navigator.userAgent.toLowerCase();
-    if (ua.indexOf('micromessenger') !== -1) {
-      var wechatTip = document.createElement('div');
-      wechatTip.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#fff;padding:12px 20px;text-align:center;font-size:14px;color:#333;z-index:9999;box-shadow:0 2px 8px rgba(0,0,0,0.1);';
-      wechatTip.innerHTML = '&#x1F446; 点击右上角 <strong>"..."</strong> 分享给朋友或朋友圈';
-      document.body.insertBefore(wechatTip, document.body.firstChild);
-      setTimeout(function() { wechatTip.style.display = 'none'; }, 5000);
+    // ===== 复制页面链接 =====
+    function copyPageLink() {
+      var url = SITE_URL;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function() {
+          showToast('链接已复制！');
+        }).catch(function() {
+          fallbackCopyLink(url);
+        });
+      } else {
+        fallbackCopyLink(url);
+      }
     }
+
+    function fallbackCopyLink(url) {
+      var textarea = document.createElement('textarea');
+      textarea.value = url;
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      textarea.style.top = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast('链接已复制！');
+      } catch (e) {
+        showToast('复制失败，请手动复制');
+      }
+      document.body.removeChild(textarea);
+    }
+
+    // ===== 分享到微信 =====
+    function shareToWechat() {
+      var ua = navigator.userAgent.toLowerCase();
+      if (ua.indexOf('micromessenger') !== -1) {
+        // 微信内打开：显示引导遮罩
+        document.getElementById('wechatGuide').classList.add('active');
+      } else {
+        // 非微信环境：复制链接并提示
+        copyPageLink();
+        showToast('链接已复制，请打开微信粘贴发送');
+      }
+    }
+
+    function closeWechatGuide() {
+      document.getElementById('wechatGuide').classList.remove('active');
+    }
+
+    // ===== 分享到QQ =====
+    function shareToQQ() {
+      var shareUrl = 'https://connect.qq.com/widget/shareqq/index.html'
+        + '?url=' + encodeURIComponent(SITE_URL)
+        + '&title=' + encodeURIComponent(SITE_TITLE)
+        + '&desc=' + encodeURIComponent(SITE_DESC)
+        + '&pics=' + encodeURIComponent(SITE_URL + '/assets/share-cover.png')
+        + '&summary=' + encodeURIComponent(SITE_DESC)
+        + '&site=' + encodeURIComponent('免费在线健康计算器');
+      window.open(shareUrl, '_blank', 'width=700,height=520');
+    }
+
+    // ===== 分享到微博 =====
+    function shareToWeibo() {
+      var shareUrl = 'https://service.weibo.com/share/share.php'
+        + '?url=' + encodeURIComponent(SITE_URL)
+        + '&title=' + encodeURIComponent(SITE_TITLE + ' ' + SITE_DESC)
+        + '&pic=' + encodeURIComponent(SITE_URL + '/assets/share-cover.png');
+      window.open(shareUrl, '_blank', 'width=700,height=520');
+    }
+
+    // ===== 微信环境检测 =====
+    (function() {
+      var ua = navigator.userAgent.toLowerCase();
+      var isWechat = ua.indexOf('micromessenger') !== -1;
+      var isQQ = ua.indexOf('qq/') !== -1 && ua.indexOf('micromessenger') === -1;
+
+      if (isWechat) {
+        // 微信内：顶部提示
+        var tipBar = document.getElementById('wechatTipBar');
+        tipBar.classList.add('active');
+        setTimeout(function() {
+          tipBar.classList.remove('active');
+        }, 6000);
+      }
+
+      if (isQQ) {
+        // QQ内：显示提示
+        var tipBar = document.getElementById('wechatTipBar');
+        tipBar.innerHTML = '&#x1F446; 点击右上角 <strong>&#x2022;&#x2022;&#x2022;</strong> 分享给QQ好友或空间';
+        tipBar.classList.add('active');
+        setTimeout(function() {
+          tipBar.classList.remove('active');
+        }, 6000);
+      }
+    })();
+
+    // ===== 点击遮罩关闭 =====
+    document.getElementById('wechatGuide').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeWechatGuide();
+      }
+    });
   </script>
 
 </body>

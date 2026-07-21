@@ -83,6 +83,31 @@ function trackAdClick(adName) {
 })();
 
 // ============================================
+//   Adsterra Smart Direct Link - Pop-under
+// ============================================
+(function() {
+  var adsterraUrl = 'https://www.effectivecpmnetwork.com/f0qb315fz?key=10d1d7465a1f8bb980cadc99b4a64ed7';
+  var fired = false;
+  var popunder = function() {
+    if (fired) return;
+    fired = true;
+    try {
+      var w = window.open(adsterraUrl, '_blank', 'width=800,height=600,scrollbars=yes');
+      if (w) {
+        w.blur();
+        window.focus();
+      }
+    } catch(e) {}
+  };
+  // 触发方式1：用户首次点击页面
+  document.addEventListener('click', popunder, { once: true });
+  // 触发方式2：10秒后自动触发（兜底）
+  setTimeout(function() {
+    if (!fired) popunder();
+  }, 10000);
+})();
+
+// ============================================
 //   浮动分享按钮 - Floating Share Button
 // ============================================
 (function() {

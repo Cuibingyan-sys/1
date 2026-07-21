@@ -44,6 +44,37 @@ var _hmt = _hmt || [];
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N26FR57S" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
 
+  <!-- 国内用户提示：检测到从 Vercel 域名访问（可能需翻墙），推荐国内可直接访问的 Gitee Pages 地址 -->
+  <div id="chinaMirrorBanner" style="display:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:12px 20px;text-align:center;font-size:14px;line-height:1.6;position:relative;z-index:9999;">
+    <span style="font-weight:700;">🇨🇳 国内用户推荐访问：</span>
+    <a id="chinaMirrorLink" href="https://cuibingyan.gitee.io/1" style="color:#FFD700;font-weight:700;text-decoration:underline;margin:0 6px;">cuibingyan.gitee.io/1</a>
+    <span style="opacity:0.85;">— 无需翻墙，国内直连，速度更快！</span>
+    <button onclick="document.getElementById('chinaMirrorBanner').style.display='none'" style="background:rgba(255,255,255,0.2);border:none;color:#fff;padding:4px 12px;border-radius:4px;cursor:pointer;margin-left:12px;font-size:13px;">✕ 关闭</button>
+  </div>
+  <script>
+  (function(){
+    // 检测当前域名是否为 Vercel 域名（需要翻墙才能访问的域名）
+    var host = window.location.hostname;
+    var isVercelDomain = host.includes('vercel.app') || host.includes('netlify.app') || host.includes('github.io');
+    // 检测用户是否可能来自中国（语言/时区判断）
+    var lang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+    var isChineseUser = lang.startsWith('zh');
+    try {
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (tz === 'Asia/Shanghai' || tz === 'Asia/Urumqi' || tz === 'Asia/Harbin' || tz === 'Asia/Chongqing') isChineseUser = true;
+    } catch(e) {}
+    // 如果用户在 Vercel 域名上且是中文用户，显示国内镜像提示
+    if (isVercelDomain && isChineseUser) {
+      document.getElementById('chinaMirrorBanner').style.display = 'block';
+    }
+    // 动态更新 canonical URL：根据当前域名自动切换
+    var canonicalEl = document.querySelector('link[rel="canonical"]');
+    if (canonicalEl && host) {
+      canonicalEl.href = 'https://' + host + '/';
+    }
+  })();
+  </script>
+
   <!-- Header -->
   <header class="site-header">
     <div class="header-inner">

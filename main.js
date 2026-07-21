@@ -82,6 +82,34 @@ function trackAdClick(adName) {
   });
 })();
 
+// ============================================
+//   浮动分享按钮 - Floating Share Button
+// ============================================
+(function() {
+  var toggle = document.getElementById('shareToggle');
+  var menu = document.getElementById('shareMenu');
+  if (toggle && menu) {
+    toggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      menu.classList.toggle('show');
+    });
+    document.addEventListener('click', function(e) {
+      if (!toggle.contains(e.target) && !menu.contains(e.target)) {
+        menu.classList.remove('show');
+      }
+    });
+  }
+})();
+
+window.copyShareLink = function() {
+  var url = 'https://1-seven-lovat-14.vercel.app';
+  navigator.clipboard.writeText(url).then(function() {
+    alert('链接已复制！快去分享给朋友吧 🎉');
+  });
+  try { gtag('event', 'share_copy'); } catch(e) {}
+  try { _hmt.push(['_trackEvent', 'share', 'copy']); } catch(e) {}
+};
+
 // Cookie Consent
 function acceptCookies() {
   var banner = document.getElementById('cookieBanner');

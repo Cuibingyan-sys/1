@@ -1417,6 +1417,70 @@ img { max-width: 100%; height: auto; display: block; }
   height: 20px;
 }
 
+/* --- Floating Share Button --- */
+.share-float {
+  position: fixed;
+  bottom: 90px;
+  right: 32px;
+  z-index: 998;
+}
+.share-float-toggle {
+  width: 46px;
+  height: 46px;
+  background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(255,107,107,0.35);
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.share-float-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 24px rgba(255,107,107,0.45);
+}
+.share-float-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+.share-float-menu {
+  position: absolute;
+  bottom: 54px;
+  right: 0;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  padding: 8px;
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 120px;
+}
+.share-float-menu.show {
+  display: flex;
+}
+.share-item {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.2s;
+  color: #333;
+}
+.share-item:hover { background: #f1f5f9; }
+.share-item.weibo { color: #E6162D; }
+.share-item.qq { color: #12B7F5; }
+.share-item.copy { color: #00B894; cursor: pointer; }
+@media (max-width: 768px) {
+  .share-float { bottom: 70px; right: 20px; }
+  .share-float-toggle { width: 40px; height: 40px; }
+}
+
 /* --- Cookie Consent Banner --- */
 .cookie-banner {
   position: fixed;

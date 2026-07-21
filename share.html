@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="免费在线BMI计算器、体脂率、卡路里、BMR、理想体重计算器，5秒了解你的健康数据，科学减肥必备工具">
+  <meta name="keywords" content="BMI计算器,体脂率计算器,卡路里计算器,BMR计算器,理想体重计算器,免费在线计算器,健康管理,减肥工具">
+  <meta property="og:title" content="免费在线BMI计算器 - 5秒知道你的健康数据">
+  <meta property="og:description" content="5个免费计算器，科学减肥必备！BMI、体脂率、卡路里、BMR、理想体重一键计算。">
+  <meta property="og:url" content="https://1-seven-lovat-14.vercel.app">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://1-seven-lovat-14.vercel.app/assets/share-cover.png">
+  <meta property="og:site_name" content="免费在线健康计算器">
+  <title>免费在线BMI计算器 - 5秒知道你的健康数据</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 480px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 40px 30px 30px;
+      text-align: center;
+      color: #fff;
+    }
+
+    .header .icon {
+      font-size: 56px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 6px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+
+    .header .subtitle {
+      font-size: 14px;
+      opacity: 0.9;
+      font-weight: 400;
+    }
+
+    .content {
+      padding: 30px 24px;
+    }
+
+    .intro {
+      text-align: center;
+      color: #444;
+      font-size: 16px;
+      line-height: 1.8;
+      margin-bottom: 24px;
+      padding: 16px;
+      background: #f8f9ff;
+      border-radius: 12px;
+      border-left: 4px solid #667eea;
+    }
+
+    .intro strong {
+      color: #667eea;
+    }
+
+    .feature-list {
+      list-style: none;
+      margin-bottom: 28px;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      background: #f8f9ff;
+      border-radius: 10px;
+      font-size: 15px;
+      color: #333;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .feature-list li:hover {
+      transform: translateX(4px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    }
+
+    .feature-list .check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 50%;
+      margin-right: 12px;
+      flex-shrink: 0;
+      color: #fff;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .cta-button {
+      display: block;
+      width: 100%;
+      padding: 16px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-bottom: 16px;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .cta-button:active {
+      transform: translateY(0);
+    }
+
+    .secondary-button {
+      display: block;
+      width: 100%;
+      padding: 14px 20px;
+      background: #fff;
+      color: #667eea;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+      border: 2px solid #667eea;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+      margin-bottom: 24px;
+    }
+
+    .secondary-button:hover {
+      background: #667eea;
+      color: #fff;
+    }
+
+    .qr-section {
+      text-align: center;
+      padding: 20px;
+      margin-bottom: 20px;
+      background: #fafafa;
+      border-radius: 12px;
+      border: 2px dashed #e0e0e0;
+    }
+
+    .qr-placeholder {
+      display: block;
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 12px;
+      background: #eee;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .qr-placeholder::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        linear-gradient(45deg, #667eea 25%, transparent 25%) 0 0 / 40px 40px,
+        linear-gradient(-45deg, #667eea 25%, transparent 25%) 0 0 / 40px 40px,
+        linear-gradient(45deg, transparent 75%, #667eea 75%) 20px 0 / 40px 40px,
+        linear-gradient(-45deg, transparent 75%, #667eea 75%) 20px 0 / 40px 40px;
+      opacity: 0.1;
+    }
+
+    .qr-placeholder .qr-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 48px;
+      height: 48px;
+      background: #fff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .qr-section .qr-text {
+      font-size: 13px;
+      color: #888;
+      margin-top: 8px;
+      line-height: 1.6;
+    }
+
+    .share-section {
+      margin-top: 8px;
+    }
+
+    .share-section h3 {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 14px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .share-card {
+      background: #f8f9ff;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .share-card .platform {
+      font-size: 13px;
+      font-weight: 700;
+      color: #667eea;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .share-card .text {
+      font-size: 14px;
+      color: #444;
+      line-height: 1.6;
+      word-break: break-all;
+    }
+
+    .share-card .copy-btn {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      padding: 4px 12px;
+      font-size: 12px;
+      background: #667eea;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .share-card .copy-btn:hover {
+      opacity: 0.85;
+    }
+
+    .share-card .copy-btn.copied {
+      background: #52c41a;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 16px 24px;
+      font-size: 12px;
+      color: #aaa;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .footer a {
+      color: #667eea;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <span class="icon">&#x1F3E5;</span>
+      <h1>免费在线BMI计算器</h1>
+      <p class="subtitle">5秒知道你的健康数据</p>
+    </div>
+
+    <div class="content">
+      <div class="intro">
+        5个<strong>免费健康计算器</strong>，科学减肥必备！<br>
+        无需下载，打开即用，数据安全，永久免费。
+      </div>
+
+      <ul class="feature-list">
+        <li>
+          <span class="check">&#x2713;</span>
+          <strong>BMI计算器</strong>&nbsp;&mdash; 体重指数，判断胖瘦
+        </li>
+        <li>
+          <span class="check">&#x2713;</span>
+          <strong>体脂率计算器</strong>&nbsp;&mdash; 科学评估身体脂肪
+        </li>
+        <li>
+          <span class="check">&#x2713;</span>
+          <strong>卡路里计算器</strong>&nbsp;&mdash; 精准计算食物热量
+        </li>
+        <li>
+          <span class="check">&#x2713;</span>
+          <strong>BMR计算器</strong>&nbsp;&mdash; 基础代谢率一键获取
+        </li>
+        <li>
+          <span class="check">&#x2713;</span>
+          <strong>理想体重</strong>&nbsp;&mdash; 你的健康体重区间
+        </li>
+      </ul>
+
+      <a href="https://1-seven-lovat-14.vercel.app" class="cta-button" id="ctaBtn">
+        &#x1F517; 立即免费使用
+      </a>
+
+      <a href="https://1-seven-lovat-14.vercel.app/shop.html" class="secondary-button">
+        &#x1F6CD; 减肥好物推荐
+      </a>
+
+      <div class="qr-section">
+        <div class="qr-placeholder">
+          <div class="qr-center">&#x1F4F1;</div>
+        </div>
+        <p class="qr-text">
+          <strong>扫码访问</strong><br>
+          微信/QQ/浏览器扫码打开<br>
+          建议将二维码图片替换为实际生成的二维码
+        </p>
+      </div>
+
+      <div class="share-section">
+        <h3>&#x1F4E2; 分享文案（一键复制）</h3>
+
+        <div class="share-card" id="share-wechat">
+          <div class="platform">&#x1F4F1; 微信朋友圈</div>
+          <div class="text" id="text-wechat">分享一个超好用的免费在线健康计算器！BMI、体脂率、卡路里、BMR、理想体重，5个工具5秒出结果，科学减肥必备！&#x1F449; https://1-seven-lovat-14.vercel.app</div>
+          <button class="copy-btn" onclick="copyText('text-wechat', this)">复制</button>
+        </div>
+
+        <div class="share-card" id="share-qq">
+          <div class="platform">&#x1F426; QQ空间</div>
+          <div class="text" id="text-qq">【免费在线BMI计算器】5秒测出你的健康数据！BMI、体脂率、卡路里、BMR、理想体重，全免费，超好用！科学管理身材从这里开始 &#x1F525; https://1-seven-lovat-14.vercel.app</div>
+          <button class="copy-btn" onclick="copyText('text-qq', this)">复制</button>
+        </div>
+
+        <div class="share-card" id="share-weibo">
+          <div class="platform">&#x1F4E2; 微博</div>
+          <div class="text" id="text-weibo">#免费健康计算器# #减肥必备工具# 分享一个宝藏网站！5个免费在线计算器：BMI、体脂率、卡路里、BMR、理想体重。科学减肥，从了解自己开始！&#x1F4AA; 戳这里 &#x2192; https://1-seven-lovat-14.vercel.app</div>
+          <button class="copy-btn" onclick="copyText('text-weibo', this)">复制</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      免费在线健康计算器 &copy; 2026 &nbsp;|&nbsp;
+      <a href="https://1-seven-lovat-14.vercel.app">返回首页</a>
+    </div>
+  </div>
+
+  <script>
+    function copyText(elementId, btn) {
+      var text = document.getElementById(elementId).innerText;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function() {
+          btn.textContent = '已复制';
+          btn.classList.add('copied');
+          setTimeout(function() {
+            btn.textContent = '复制';
+            btn.classList.remove('copied');
+          }, 2000);
+        }).catch(function() {
+          fallbackCopy(text, btn);
+        });
+      } else {
+        fallbackCopy(text, btn);
+      }
+    }
+
+    function fallbackCopy(text, btn) {
+      var textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        btn.textContent = '已复制';
+        btn.classList.add('copied');
+        setTimeout(function() {
+          btn.textContent = '复制';
+          btn.classList.remove('copied');
+        }, 2000);
+      } catch (e) {
+        btn.textContent = '失败';
+      }
+      document.body.removeChild(textarea);
+    }
+
+    // 微信内打开直接提示右上角分享
+    var ua = navigator.userAgent.toLowerCase();
+    if (ua.indexOf('micromessenger') !== -1) {
+      var wechatTip = document.createElement('div');
+      wechatTip.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#fff;padding:12px 20px;text-align:center;font-size:14px;color:#333;z-index:9999;box-shadow:0 2px 8px rgba(0,0,0,0.1);';
+      wechatTip.innerHTML = '&#x1F446; 点击右上角 <strong>"..."</strong> 分享给朋友或朋友圈';
+      document.body.insertBefore(wechatTip, document.body.firstChild);
+      setTimeout(function() { wechatTip.style.display = 'none'; }, 5000);
+    }
+  </script>
+
+</body>
+</html>

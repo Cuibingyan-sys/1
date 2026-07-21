@@ -1,0 +1,34 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+Sitemap: https://1-seven-lovat-14.vercel.app/sitemap.xml
+
+# Crawl-delay for well-behaved bots
+Crawl-delay: 5
+
+# Specific bot rules
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 2
+
+User-agent: 360Spider
+Allow: /
+Crawl-delay: 3
+
+User-agent: Sogou web spider
+Allow: /
+Crawl-delay: 3
+
+User-agent: YisouSpider
+Allow: /
+Crawl-delay: 3

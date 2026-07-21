@@ -1,0 +1,270 @@
+name: 自动创建 Google 服务
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: '运行模式'
+        required: true
+        type: choice
+        options:
+          - '仅更新代码 (已有ID)'
+          - '创建 GA4 + GTM + AdSense'
+        default: '创建 GA4 + GTM + AdSense'
+      ga4_id:
+        description: 'GA4 测量 ID'
+        required: false
+      gtm_id:
+        description: 'GTM 容器 ID'
+        required: false
+      adsense_id:
+        description: 'AdSense 发布商 ID'
+        required: false
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    timeout-minutes: 15
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装依赖
+        run: pip install requests --break-system-packages
+
+      - name: 创建 Google 服务
+        if: github.event.inputs.mode == '创建 GA4 + GTM + AdSense'
+        run: |
+          python3 << 'PYEOF'
+          import json, os, sys, time, requests, subprocess, re
+          from pathlib import Path
+
+          print("=" * 60)
+          print("AUTO SETUP GOOGLE SERVICES")
+          print("=" * 60)
+
+          # Step 1: Get OAuth token using gcloud
+          print("\n[0/3] Authenticating with Google...")
+          
+          # Check if gcloud is available
+          result = subprocess.run(["gcloud", "version"], capture_output=True, text=True)
+          if result.returncode != 0:
+              print("gcloud not found, installing...")
+              # Install gcloud
+              subprocess.run(["curl", "-sSL", "https://sdk.cloud.google.com"], capture_output=True)
+              subprocess.run(["bash"], input="", capture_output=True)
+              print("gcloud installed")
+          
+          # Try gcloud auth
+          print("\nStarting OAuth flow...")
+          print("A URL will be printed below. OPEN IT IN YOUR BROWSER and approve.")
+          print("Then copy the authorization code back here.")
+          print()
+          
+          result = subprocess.run(
+              ["gcloud", "auth", "application-default", "login", "--no-browser", "--scopes=openid,https://www.googleapis.com/auth/analytics.edit,https://www.googleapis.com/auth/tagmanager.edit.containers,https://www.googleapis.com/auth/adsense"],
+              capture_output=True, text=True, timeout=30
+          )
+          print("STDOUT:", result.stdout)
+          print("STDERR:", result.stderr)
+          
+          # Extract URL from output
+          url_match = re.search(r'https://accounts\.google\.com/o/oauth2/auth[^\s]+', result.stderr + result.stdout)
+          if url_match:
+              print(f"\nAUTHORIZATION URL: {url_match.group()}")
+          else:
+              print("Could not find authorization URL in output")
+          
+          # Try to get access token from gcloud
+          result = subprocess.run(
+              ["gcloud", "auth", "application-default", "print-access-token"],
+              capture_output=True, text=True, timeout=10
+          )
+          token = result.stdout.strip()
+          
+          if not token:
+              print("ERROR: Could not get access token")
+              print("Please run this workflow again and check the logs for the authorization URL")
+              sys.exit(1)
+          
+          print("Token obtained successfully!")
+          
+          # Step 2: Create GA4
+          print("\n[1/3] Creating Google Analytics 4...")
+          import requests as req
+          headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+          
+          resp = req.get("https://analyticsadmin.googleapis.com/v1beta/accounts", headers=headers)
+          if resp.status_code != 200:
+              resp = req.post("https://analyticsadmin.googleapis.com/v1beta/accounts", headers=headers, json={"displayName": "Health Calculator", "regionCode": "CN"})
+          accounts = resp.json().get("accounts", [])
+          if not accounts:
+              resp = req.post("https://analyticsadmin.googleapis.com/v1beta/accounts", headers=headers, json={"displayName": "Health Calculator", "regionCode": "CN"})
+              if resp.status_code == 200:
+                  accounts = [resp.json()]
+              else:
+                  print(f"ERROR creating account: {resp.text}")
+                  sys.exit(1)
+          
+          account_id = accounts[0]["name"].split("/")[-1]
+          print(f"Account: {account_id}")
+          
+          resp = req.post("https://analyticsadmin.googleapis.com/v1beta/properties", headers=headers, json={
+              "displayName": "Health Calculator - Web", "parent": f"accounts/{account_id}",
+              "industryCategory": "HEALTH", "timeZone": "Asia/Shanghai", "currencyCode": "CNY"
+          })
+          if resp.status_code != 200:
+              print(f"ERROR creating property: {resp.text}")
+              sys.exit(1)
+          prop = resp.json()
+          prop_name = prop["name"]
+          prop_id = prop_name.split("/")[-1]
+          print(f"Property: {prop_id}")
+          
+          resp = req.post(f"https://analyticsadmin.googleapis.com/v1beta/{prop_name}/dataStreams", headers=headers, json={
+              "displayName": "Main Site", "type": "WEB_DATA_STREAM",
+              "webStreamData": {"defaultUri": "https://1-seven-lovat-14.vercel.app"}
+          })
+          ga4_id = None
+          if resp.status_code == 200:
+              stream = resp.json()
+              ga4_id = stream.get("webStreamData", {}).get("measurementId", "")
+              print(f"GA4 ID: {ga4_id}")
+          else:
+              print(f"ERROR creating stream: {resp.text}")
+          
+          # Step 3: Create GTM
+          print("\n[2/3] Creating Google Tag Manager...")
+          resp = req.get("https://tagmanager.googleapis.com/tagmanager/v2/accounts", headers=headers)
+          if resp.status_code != 200:
+              resp = req.post("https://tagmanager.googleapis.com/tagmanager/v2/accounts", headers=headers, json={"name": "Health Calculator"})
+          accounts = resp.json().get("account", [])
+          if not accounts:
+              resp = req.post("https://tagmanager.googleapis.com/tagmanager/v2/accounts", headers=headers, json={"name": "Health Calculator"})
+              if resp.status_code == 200:
+                  accounts = [resp.json()]
+          
+          gtm_id = None
+          if accounts:
+              gtm_account_id = accounts[0]["accountId"]
+              print(f"GTM Account: {gtm_account_id}")
+              resp = req.post(f"https://tagmanager.googleapis.com/tagmanager/v2/accounts/{gtm_account_id}/containers", headers=headers, json={"name": "Health Calculator Website", "usageContext": ["web"]})
+              if resp.status_code == 200:
+                  gtm_id = resp.json().get("publicId", "")
+                  print(f"GTM ID: {gtm_id}")
+              else:
+                  print(f"ERROR creating container: {resp.text}")
+          
+          # Step 4: Check AdSense
+          print("\n[3/3] Checking AdSense...")
+          adsense_id = None
+          resp = req.get("https://adsense.googleapis.com/v2/accounts", headers=headers)
+          if resp.status_code == 200:
+              accounts = resp.json().get("accounts", [])
+              if accounts:
+                  adsense_id = accounts[0]["name"].split("/")[-1]
+                  print(f"AdSense: {adsense_id}")
+              else:
+                  print("No AdSense account found")
+          else:
+              print(f"AdSense API: {resp.status_code}")
+          
+          # Step 5: Update files
+          print("\nUpdating website code...")
+          updated = 0
+          for f in sorted(Path(".").glob("*.html")):
+              if f.name.startswith("."):
+                  continue
+              content = f.read_text(encoding="utf-8")
+              original = content
+              if ga4_id:
+                  content = content.replace("G-XXXXXXXXXX", ga4_id)
+              if gtm_id:
+                  content = content.replace("GTM-XXXXXXX", gtm_id)
+              if adsense_id:
+                  content = content.replace("ca-pub-XXXXXXXXXXXXXXXX", f"ca-pub-{adsense_id}")
+              if content != original:
+                  f.write_text(content, encoding="utf-8")
+                  updated += 1
+                  print(f"  Updated: {f.name}")
+          print(f"Total: {updated} files")
+          
+          # Save results
+          result = {
+              "ga4_measurement_id": ga4_id,
+              "gtm_container_id": gtm_id,
+              "adsense_publisher_id": f"ca-pub-{adsense_id}" if adsense_id else None,
+              "website": "https://1-seven-lovat-14.vercel.app",
+          }
+          with open("google_services.json", "w", encoding="utf-8") as f:
+              json.dump(result, f, ensure_ascii=False, indent=2)
+          
+          print(f"\n{'='*60}")
+          print("RESULTS:")
+          print(f"  GA4:      {ga4_id or 'FAILED'}")
+          print(f"  GTM:      {gtm_id or 'FAILED'}")
+          print(f"  AdSense:  {adsense_id or 'Set up manually'}")
+          print(f"{'='*60}")
+          PYEOF
+
+      - name: 仅更新代码
+        if: github.event.inputs.mode == '仅更新代码 (已有ID)'
+        run: |
+          python3 -c "
+          import json
+          from pathlib import Path
+          ga4_id = '${{ github.event.inputs.ga4_id }}'.strip()
+          gtm_id = '${{ github.event.inputs.gtm_id }}'.strip()
+          adsense_id = '${{ github.event.inputs.adsense_id }}'.strip()
+          updated = []
+          for f in Path('.').glob('*.html'):
+              if f.name.startswith('.'):
+                  continue
+              try:
+                  content = f.read_text(encoding='utf-8')
+              except:
+                  continue
+              original = content
+              if ga4_id and ga4_id != 'G-XXXXXXXXXX':
+                  content = content.replace('G-XXXXXXXXXX', ga4_id)
+              if gtm_id and gtm_id != 'GTM-XXXXXXX':
+                  content = content.replace('GTM-XXXXXXX', gtm_id)
+              if adsense_id and adsense_id != 'ca-pub-XXXXXXXXXXXXXXXX' and adsense_id:
+                  content = content.replace('ca-pub-XXXXXXXXXXXXXXXX', adsense_id)
+              if content != original:
+                  f.write_text(content, encoding='utf-8')
+                  updated.append(f.name)
+                  print(f'Updated: {f.name}')
+          print(f'Total: {len(updated)} files')
+          result = {
+              'ga4_measurement_id': ga4_id if ga4_id and ga4_id != 'G-XXXXXXXXXX' else None,
+              'gtm_container_id': gtm_id if gtm_id and gtm_id != 'GTM-XXXXXXX' else None,
+              'adsense_publisher_id': adsense_id if adsense_id and adsense_id != 'ca-pub-XXXXXXXXXXXXXXXX' and adsense_id else None,
+              'website': 'https://1-seven-lovat-14.vercel.app',
+          }
+          with open('google_services.json', 'w', encoding='utf-8') as fp:
+              json.dump(result, fp, ensure_ascii=False, indent=2)
+          print('google_services.json saved')
+          "
+
+      - name: 提交变更
+        if: success()
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add google_services.json 2>/dev/null || true
+          git add *.html 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No changes"
+          else
+            git commit -m "自动更新: Google 服务 ID 配置 [skip ci]"
+            git push
+            echo "DONE - Vercel will auto-deploy"
+          fi

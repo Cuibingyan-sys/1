@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-07-18T05:33:05.873542+08:00",
+  "date": "2026-07-18",
+  "website": "https://1-90morr2v6-cuibingyan-sys-projects.vercel.app",
+  "traffic": {
+    "visitors": "N/A",
+    "pageviews": "N/A",
+    "top_pages": [],
+    "sources": [],
+    "note": "需要配置 GA4 后自动获取真实数据"
+  },
+  "revenue": {
+    "estimated_earnings": "N/A",
+    "impressions": "N/A",
+    "clicks": "N/A",
+    "note": "AdSense 已配置 (ca-pub-5918744)，审批通过后自动展示广告"
+  },
+  "status": {
+    "site_online": true,
+    "ga4_configured": true,
+    "adsense_configured": true,
+    "gtm_configured": true
+  }
+}

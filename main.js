@@ -102,7 +102,7 @@ function trackAdClick(adName) {
 })();
 
 window.copyShareLink = function() {
-  var url = 'https://1-seven-lovat-14.vercel.app';
+  var url = 'https://cuibingyan-sys.github.io/1';
   navigator.clipboard.writeText(url).then(function() {
     alert('链接已复制！快去分享给朋友吧 🎉');
   });

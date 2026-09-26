@@ -15,7 +15,7 @@ from pathlib import Path
 
 USER_OPEN_ID = "ou_2a31a00927cb6a1d9cdf5de1c20351f3"
 USER_NAME = "崔冰堰"
-SITE_URL = "https://1-seven-lovat-14.vercel.app"
+SITE_URL = "https://cuibingyan-sys.github.io/1"
 DASHBOARD_URL = f"{SITE_URL}/dashboard.html"
 WORKSPACE = "/workspace/1"
 CONFIG_FILE = f"{WORKSPACE}/bot_config.json"
@@ -66,7 +66,7 @@ SYSTEM_PROMPT = f"""你是「AI数字工厂」的智能助手，运行在飞书�
 - 网站名称：健康计算器
 - 网址：{SITE_URL}
 - 功能：BMI计算器、卡路里计算器、基础代谢率(BMR)、体脂率估算、理想体重计算
-- 已配置：百度统计(ed8ab485d1d0f7834eec48d97566623c)、GA4(G-9HDK6XWY7J)、GTM(GTM-N26FR57S)、AdSense(ca-pub-5918744)、京东联盟(2038380499)
+- 已配置：百度统计(ed8ab485d1d0f7834eec48d97566623c)、GA4(G-9HDK6XWY7J)、GTM(GTM-N26FR57S)、AdSense(ca-pub-6509869126329068)、京东联盟(2038380499)
 - 部署：GitHub(Cuibingyan-sys/1) → Vercel 自动部署
 - 仪表盘：{DASHBOARD_URL}
 

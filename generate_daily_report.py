@@ -9,7 +9,7 @@ today = now.strftime("%Y-%m-%d")
 report = {
     "generated_at": now.isoformat(),
     "date": today,
-    "website": "https://1-seven-lovat-14.vercel.app",
+    "website": "https://cuibingyan-sys.github.io/1",
     "traffic": {
         "visitors": "N/A",
         "pageviews": "N/A",

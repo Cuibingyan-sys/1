@@ -10,7 +10,7 @@
 
 set -euo pipefail
 
-SITE_URL="https://1-seven-lovat-14.vercel.app"
+SITE_URL="https://cuibingyan-sys.github.io/1"
 SITE_NAME="免费在线健康计算器"
 SITE_DESC="免费在线BMI、体脂率、卡路里、BMR、理想体重计算器，科学减肥必备工具"
 SITE_EMAIL="admin@example.com"  # 请替换为真实邮箱

@@ -65,9 +65,9 @@ html = f"""<!DOCTYPE html>
     </div>
 
     <div style="background: #f8f9fa; padding: 15px; border-radius: 0 0 12px 12px; text-align: center; border: 1px solid #e0e0e0; border-top: none;">
-        <a href="https://1-seven-lovat-14.vercel.app" style="color: #667eea; text-decoration: none; font-weight: bold;">🌐 访问网站</a>
+        <a href="https://cuibingyan-sys.github.io/1" style="color: #667eea; text-decoration: none; font-weight: bold;">🌐 访问网站</a>
         <span style="margin: 0 10px; color: #ccc;">|</span>
-        <a href="https://1-seven-lovat-14.vercel.app/dashboard-data.json" style="color: #667eea; text-decoration: none;">📋 查看仪表盘数据</a>
+        <a href="https://cuibingyan-sys.github.io/1/dashboard-data.json" style="color: #667eea; text-decoration: none;">📋 查看仪表盘数据</a>
         <p style="margin: 10px 0 0; color: #999; font-size: 12px;">此邮件由健康计算器自动发送 · {datetime.now().strftime('%Y-%m-%d %H:%M')}</p>
     </div>
 </body>

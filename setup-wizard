@@ -183,7 +183,7 @@
       ga4_measurement_id: document.getElementById('ga4Input').value.trim() || 'G-9HDK6XWY7J',
       gtm_container_id: document.getElementById('gtmInput').value.trim() || 'GTM-N26FR57S',
       adsense_publisher_id: document.getElementById('adsenseInput').value.trim() || 'ca-pub-',
-      website: 'https://1-seven-lovat-14.vercel.app'
+      website: 'https://cuibingyan-sys.github.io/1'
     };
   }
 

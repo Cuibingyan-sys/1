@@ -1,6 +1,6 @@
 # 🏥 健康计算器 - 免费在线健康工具
 
-[![Website](https://img.shields.io/badge/Website-Online-brightgreen)](https://1-90morr2v6-cuibingyan-sys-projects.vercel.app)
+[![Website](https://img.shields.io/badge/Website-Online-brightgreen)](https://cuibingyan-sys.github.io/1)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Deploy](https://img.shields.io/badge/Deploy-Vercel-black)](https://vercel.com)
 
@@ -8,7 +8,7 @@
 
 ## 🌐 在线访问
 
-**[https://1-90morr2v6-cuibingyan-sys-projects.vercel.app](https://1-90morr2v6-cuibingyan-sys-projects.vercel.app)**
+**[https://cuibingyan-sys.github.io/1](https://cuibingyan-sys.github.io/1)**
 
 ## ✨ 核心功能
 
@@ -22,16 +22,16 @@
 
 ## 📚 健康知识库
 
-- 🔥 [2026夏季减肥全攻略](https://1-90morr2v6-cuibingyan-sys-projects.vercel.app/summer-weight-loss) - 科学减脂不反弹的终极指南
-- 💪 [2026科学减肥完整指南](https://1-90morr2v6-cuibingyan-sys-projects.vercel.app/weight-loss-guide) - 一个月瘦10斤不反弹
-- 🥛 [蛋白粉选购指南](https://1-90morr2v6-cuibingyan-sys-projects.vercel.app/protein-powder-guide) - 健身增肌减脂必备
-- 📊 [BMI完全指南](https://1-90morr2v6-cuibingyan-sys-projects.vercel.app/bmi-guide) - 了解你的身体质量指数
-- 🍽️ [卡路里完全指南](https://1-90morr2v6-cuibingyan-sys-projects.vercel.app/calorie-guide) - 科学饮食从这里开始
+- 🔥 [2026夏季减肥全攻略](https://cuibingyan-sys.github.io/1/summer-weight-loss) - 科学减脂不反弹的终极指南
+- 💪 [2026科学减肥完整指南](https://cuibingyan-sys.github.io/1/weight-loss-guide) - 一个月瘦10斤不反弹
+- 🥛 [蛋白粉选购指南](https://cuibingyan-sys.github.io/1/protein-powder-guide) - 健身增肌减脂必备
+- 📊 [BMI完全指南](https://cuibingyan-sys.github.io/1/bmi-guide) - 了解你的身体质量指数
+- 🍽️ [卡路里完全指南](https://cuibingyan-sys.github.io/1/calorie-guide) - 科学饮食从这里开始
 
 ## 🛒 好物推荐
 
-- ⚖️ [智能体脂秤对比评测](https://1-90morr2v6-cuibingyan-sys-projects.vercel.app/smart-scale-compare) - 华为/小米/Keep/香山全方位对比
-- 🛍️ [推荐好物商城](https://1-90morr2v6-cuibingyan-sys-projects.vercel.app/shop) - 京东联盟精选健康好物
+- ⚖️ [智能体脂秤对比评测](https://cuibingyan-sys.github.io/1/smart-scale-compare) - 华为/小米/Keep/香山全方位对比
+- 🛍️ [推荐好物商城](https://cuibingyan-sys.github.io/1/shop) - 京东联盟精选健康好物
 
 ## 🛠 技术栈
 
@@ -45,7 +45,7 @@
 
 ## 📊 数据面板
 
-访问 [Dashboard](https://1-90morr2v6-cuibingyan-sys-projects.vercel.app/dashboard) 查看实时流量和收益数据。
+访问 [Dashboard](https://cuibingyan-sys.github.io/1/dashboard) 查看实时流量和收益数据。
 
 ## 🚀 快速开始
 

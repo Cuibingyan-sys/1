@@ -151,7 +151,7 @@ def create_ga4_property(token):
         json={
             "displayName": "Main Site",
             "type": "WEB_DATA_STREAM",
-            "webStreamData": {"defaultUri": "https://1-seven-lovat-14.vercel.app"}
+            "webStreamData": {"defaultUri": "https://cuibingyan-sys.github.io/1"}
         }
     )
     if resp.status_code == 200:
@@ -245,7 +245,7 @@ def update_html_files(ga4_id, gtm_id, adsense_id):
 def main():
     print("=" * 60)
     print("AUTO SETUP GOOGLE SERVICES")
-    print("https://1-seven-lovat-14.vercel.app")
+    print("https://cuibingyan-sys.github.io/1")
     print("=" * 60)
     
     token = get_access_token()
@@ -267,7 +267,7 @@ def main():
         "ga4_measurement_id": ga4_id,
         "gtm_container_id": gtm_id,
         "adsense_publisher_id": adsense_id,
-        "website": "https://1-seven-lovat-14.vercel.app",
+        "website": "https://cuibingyan-sys.github.io/1",
     }
     
     print(f"\n{'='*60}")

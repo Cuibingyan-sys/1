@@ -14,14 +14,14 @@ set -euo pipefail
 BAIDU_API_URL="http://data.zz.baidu.com/urls"
 
 # 站点域名
-SITE="https://1-seven-lovat-14.vercel.app"
+SITE="https://cuibingyan-sys.github.io/1"
 
 # --- 参数检查 ---
 if [ $# -lt 2 ]; then
     echo "用法: bash baidu_push.sh <site> <token>"
     echo ""
     echo "参数说明:"
-    echo "  site   - 在百度站长平台验证的站点域名 (如: https://1-seven-lovat-14.vercel.app)"
+    echo "  site   - 在百度站长平台验证的站点域名 (如: https://cuibingyan-sys.github.io/1)"
     echo "  token  - 百度站长平台提供的推送接口调用token"
     echo ""
     echo "获取token步骤:"

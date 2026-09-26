@@ -130,7 +130,7 @@ jobs:
           
           resp = req.post(f"https://analyticsadmin.googleapis.com/v1beta/{prop_name}/dataStreams", headers=headers, json={
               "displayName": "Main Site", "type": "WEB_DATA_STREAM",
-              "webStreamData": {"defaultUri": "https://1-seven-lovat-14.vercel.app"}
+              "webStreamData": {"defaultUri": "https://cuibingyan-sys.github.io/1"}
           })
           ga4_id = None
           if resp.status_code == 200:
@@ -201,7 +201,7 @@ jobs:
               "ga4_measurement_id": ga4_id,
               "gtm_container_id": gtm_id,
               "adsense_publisher_id": f"ca-pub-{adsense_id}" if adsense_id else None,
-              "website": "https://1-seven-lovat-14.vercel.app",
+              "website": "https://cuibingyan-sys.github.io/1",
           }
           with open("google_services.json", "w", encoding="utf-8") as f:
               json.dump(result, f, ensure_ascii=False, indent=2)
@@ -247,7 +247,7 @@ jobs:
               'ga4_measurement_id': ga4_id if ga4_id and ga4_id != 'G-XXXXXXXXXX' else None,
               'gtm_container_id': gtm_id if gtm_id and gtm_id != 'GTM-XXXXXXX' else None,
               'adsense_publisher_id': adsense_id if adsense_id and adsense_id != 'ca-pub-XXXXXXXXXXXXXXXX' and adsense_id else None,
-              'website': 'https://1-seven-lovat-14.vercel.app',
+              'website': 'https://cuibingyan-sys.github.io/1',
           }
           with open('google_services.json', 'w', encoding='utf-8') as fp:
               json.dump(result, fp, ensure_ascii=False, indent=2)

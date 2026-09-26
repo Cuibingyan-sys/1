@@ -6,7 +6,7 @@ from datetime import datetime
 
 CHAT_ID = "oc_c449875cc7737a8c2295a6310c482023"
 REPORT_PATH = Path("reports/latest.json")
-SITE_URL = "https://1-seven-lovat-14.vercel.app"
+SITE_URL = "https://cuibingyan-sys.github.io/1"
 DASHBOARD_URL = f"{SITE_URL}/dashboard.html"
 
 # ── 读取报告 ──

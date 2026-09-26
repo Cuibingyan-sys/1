@@ -16,7 +16,7 @@ from pathlib import Path
 APP_ID = os.environ.get("FEISHU_APP_ID", "")
 APP_SECRET = os.environ.get("FEISHU_APP_SECRET", "")
 CHAT_ID = os.environ.get("FEISHU_CHAT_ID", "oc_c449875cc7737a8c2295a6310c482023")
-SITE_URL = "https://1-seven-lovat-14.vercel.app"
+SITE_URL = "https://cuibingyan-sys.github.io/1"
 DASHBOARD_URL = f"{SITE_URL}/dashboard.html"
 
 # 尝试多个路径找报告文件

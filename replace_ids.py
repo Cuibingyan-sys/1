@@ -122,7 +122,7 @@ def main():
             "ga4_measurement_id": ga4_id if has_ga4 else None,
             "gtm_container_id": gtm_id if has_gtm else None,
             "adsense_publisher_id": adsense_id if has_adsense else None,
-            "website": "https://1-seven-lovat-14.vercel.app",
+            "website": "https://cuibingyan-sys.github.io/1",
             "updated_at": str(Path(".").resolve()),
         }, f, ensure_ascii=False, indent=2)
     
